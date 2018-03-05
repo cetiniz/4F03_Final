@@ -39,8 +39,7 @@ int main(int argc, char* argv[]){
 	unsigned char* image;
 
 	//root node stuff goes here
-	if(my_rank == 0){
-
+	if (my_rank == 1) {
 
 
 		//almost done, just save the image
