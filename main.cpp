@@ -18,12 +18,12 @@ int main(int argc, char* argv[]){
 		printf("Usage: %s numParticlesLight numParticleMedium numParticleHeavy numSteps subSteps timeSubStep imageWidth imageHeight imageFilenamePrex\n", argv[0]);
 	}
 
-	MPI_Init(&argc,&argv);
+	//MPI_Init(&argc,&argv);
 
 	int p, my_rank;
 
-	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-	MPI_Comm_size(MPI_COMM_WORLD, &p);
+	//MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+	//MPI_Comm_size(MPI_COMM_WORLD, &p);
 
 	//variables
 	int numParticlesLight = 0;
@@ -53,6 +53,6 @@ int main(int argc, char* argv[]){
 
 	free(image);
 
-	MPI_Finalize();
+	//MPI_Finalize();
 	return 0;
 }
