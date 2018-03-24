@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
 	MPI_Init(&argc,&argv);
 
 	int p, my_rank;
-	int i,j;
+	int i,j,m,offset;
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
@@ -42,12 +42,12 @@ int main(int argc, char* argv[]){
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
 
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
- 	double * s_x = (double *) malloc(sizeof(double) * numParticlesTotal); //matrix to store positions of particles
- 	double * s_y = (double *) malloc(sizeof(double) * numParticlesTotal); //matrix to store positions of particles
- 	double * v_x = (double *) malloc(sizeof(double) * numParticlesTotal); //matrix to store velocities of particles
- 	double * v_y = (double *) malloc(sizeof(double) * numParticlesTotal);
- 	double **f = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles
-
+ 	double * s_x = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in x dimension
+ 	double * s_y = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in y dimension
+ 	double * v_x = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store velocities of particles in x dimesion
+ 	double * v_y = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store velocities of particles in y dimesion
+ 	double **f_x = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in x dimension
+ 	double **f_y = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in y dimension
 
  	int imageWidth = std::stoi(argv[7]);
  	int imageHeight = std::stoi(argv[8]);
@@ -57,6 +57,15 @@ int main(int argc, char* argv[]){
  	double timeSubStep;
 
  	int width, height;
+ 	int particlesToReceive;
+ 	int particlesPerProcessor = numParticlesTotal/p;
+ 	int particlesRemaining = numParticlesTotal%p;
+
+ 	int * pointerForOriginalArray;
+ 	int * particlesToCompute_s_x;
+ 	int * particlesToCompute_s_y;
+ 	int * particlesToCompute_v_x;
+ 	int * particlesToCompute_v_y;
 
  	unsigned char* image;
 
@@ -86,9 +95,31 @@ int main(int argc, char* argv[]){
  		}
  	}
 
+
  	for (dest = 0; dest < p; dest++){
- 		
+
+ 		/******* STEP 1: ALLOCATE NUMBER OF ROWS TO EACH PROCESSOR *******/
+ 		particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+ 		particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
+
+ 		m=0;
+      	offset = dest;
+      	for(i = offset; i < row; i+=p){
+          	particlesToCompute_s_x[m] = s_x[i];
+          	particlesToCompute_s_y[m] = s_y[i];
+        	pointerForOriginalArray[m] = i;
+        	m++;
+      	}
+
  	}
+
+ 	 if (dest > 0){ //for all other destinations than master processor, send array containing values to compute, pointer array, matrix B
+      MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+      MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+      MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+    }
 
  	saveBMP(argv[9], image, width, height);
  }
