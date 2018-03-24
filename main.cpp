@@ -21,6 +21,10 @@ double **contigArrayGenerator(int row, int col){
 	return contigarray;
 }
 
+double computeForce(double particleOnePos, double particleTwoPos, int particleOneWeight, int particleTwoWeight){
+
+}
+
 int main(int argc, char* argv[]){
 	
 	if( argc != 10){
@@ -64,8 +68,23 @@ int main(int argc, char* argv[]){
  	int * pointerForOriginalArray;
  	int * particlesToCompute_s_x;
  	int * particlesToCompute_s_y;
+ 	int * particleWeights;
  	int * particlesToCompute_v_x;
  	int * particlesToCompute_v_y;
+
+
+ 	int * pointerForLocalArray;
+ 	int * pointerForTempArray;
+ 	int * tempWeights;
+ 	int * localWeights;
+ 	int * localArray_s_x;
+ 	int * localArray_s_y;
+ 	int * localArray_f_x;
+ 	int * localArray_f_y;
+ 	int * tempArray_s_x;
+ 	int * tempArray_s_y;
+ 	int * tempArray_f_x;
+ 	int * tempArray_f_y;
 
  	unsigned char* image;
 
@@ -98,33 +117,80 @@ int main(int argc, char* argv[]){
 
  	for (dest = 0; dest < p; dest++){
 
- 		/******* STEP 1: ALLOCATE NUMBER OF ROWS TO EACH PROCESSOR *******/
+ 		/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
  		particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+
+ 		/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
  		particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
  		particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
  		pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
 
+ 		/******* STEP 3: DISTRIBUTE PARTICLES FROM ORIGINAL ARRAYS TO NEW ARRAYS & MARK LOCATION IN ORIGINAL ARRAYS *******/
  		m=0;
       	offset = dest;
       	for(i = offset; i < row; i+=p){
           	particlesToCompute_s_x[m] = s_x[i];
           	particlesToCompute_s_y[m] = s_y[i];
+          	particleWeights = w[i];
         	pointerForOriginalArray[m] = i;
         	m++;
       	}
-
  	}
 
- 	 if (dest > 0){ //for all other destinations than master processor, send array containing values to compute, pointer array, matrix B
-      MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
-      MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
-      MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+	/******* SEND ARRAYS TO SLAVE PROCESSORS *******/
+ 	if (dest > 0){ 
+      	MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+    }
+
+    if(dest == 0){ //Master processor does work to relieve slaves & also when there is only 1 processor
+
     }
 
  	saveBMP(argv[9], image, width, height);
  }
 
- else{
+ /***************************SLAVE TASKS **********************************/
+ else if(my_rank > 0){
+ 	localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	localArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	localArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	
+ 	tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	tempArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	tempArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+
+ 	if(source == 0){
+ 		MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+
+ 		for(i = 0; i < particlesToReceive; i++){
+ 			tempArray_s_x[i] = localArray_s_x[i];
+ 			tempArray_s_y[i] = localArray_s_y[i];
+ 		}
+
+ 	} else if(souce > 0){
+ 		MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(tempArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(tempArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 	}
+
+ 	for(i = 0; i < particlesToReceive; i++){
+ 		if(pointerForLocalArray[i] < pointerForTempArray[i]){
+ 			localArray_f_x[i] += computeForce(tempArray_s_x[i], localArray_s_x[i], tempWeights[i], localWeights[i]);
+ 			localArray_f_y[i] += computeForce(tempArray_s_y[i], localArray_s_y[i], tempWeights[i], localWeights[i]);
+ 		}
+ 	}
 
  }
 
