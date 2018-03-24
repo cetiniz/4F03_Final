@@ -11,6 +11,7 @@
 #include "properties.h"
 
 #define epsilon 0.000000000000000222
+#define g 6.673*10^-11
 
 double **contigArrayGenerator(int row, int col){
 	double **contigarray = (double **)malloc(row*sizeof(double));
@@ -22,7 +23,8 @@ double **contigArrayGenerator(int row, int col){
 }
 
 double computeForce(double particleOnePos, double particleTwoPos, int particleOneWeight, int particleTwoWeight){
-
+	double force = g*particleOneWeight*particleTwoWeight;
+	return force;
 }
 
 int main(int argc, char* argv[]){
