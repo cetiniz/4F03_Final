@@ -155,7 +155,7 @@ int main(int argc, char* argv[]){
  	saveBMP(argv[9], image, width, height);
  }
 
- /***************************SLAVE TASKS **********************************/
+ /*************************** SLAVE TASKS **********************************/
  else if(my_rank > 0){
  	localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
  	localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -187,11 +187,35 @@ int main(int argc, char* argv[]){
  		MPI_Recv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  	}
 
- 	for(i = 0; i < particlesToReceive; i++){
- 		if(pointerForLocalArray[i] < pointerForTempArray[i]){
- 			localArray_f_x[i] += computeForce(tempArray_s_x[i], localArray_s_x[i], tempWeights[i], localWeights[i]);
- 			localArray_f_y[i] += computeForce(tempArray_s_y[i], localArray_s_y[i], tempWeights[i], localWeights[i]);
+ 	if(source == (my_rank+1)%p){
+ 		for(i = 0; i < particlesToReceive; i++){
+ 			localArray_f_x[i] += tempArray_f_x[i];
+ 			localArray_f_y[i] += tempArray_f_y[i];
  		}
+
+ 		MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
+
+ 	} else{
+	 	j=0;
+	 	for(i = 0; i < particlesToReceive; i++){
+		 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive){ //find index where particle number in tempArray is greater than localArray
+				j++;
+	 		}
+	 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
+	 			localArray_f_x[i] += computeForce(tempArray_s_x[i], localArray_s_x[i], tempWeights[i], localWeights[i]);
+	 			localArray_f_y[i] += computeForce(tempArray_s_y[i], localArray_s_y[i], tempWeights[i], localWeights[i]);
+	 			tempArray_f_x[j] -= computeForce(tempArray_s_y[i], localArray_s_y[i], tempWeights[i], localWeights[i]);
+	 			tempArray_f_y[j] -= computeForce(tempArray_s_y[i], localArray_s_y[i], tempWeights[i], localWeights[i]);
+	 		}
+ 		}
+
+ 		MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
+ 		MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
+      	MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
  	}
 
  }
