@@ -138,7 +138,7 @@ int main(int argc, char* argv[]){
         	pointerForOriginalArray[m] = i;
         	m++;
       	}
- 	}
+ 	
 
 	/******* SEND ARRAYS TO SLAVE PROCESSORS *******/
  	if (dest > 0){ 
@@ -151,6 +151,7 @@ int main(int argc, char* argv[]){
     if(dest == 0){ //Master processor does work to relieve slaves & also when there is only 1 processor
 
     }
+}
 
  	saveBMP(argv[9], image, width, height);
  }
@@ -169,6 +170,7 @@ int main(int argc, char* argv[]){
  	tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
  	tempArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 
+ 	/******* Recieve particles from MASTER *******/
  	if(source == 0){
  		MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  		MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
@@ -180,19 +182,24 @@ int main(int argc, char* argv[]){
  			tempArray_s_y[i] = localArray_s_y[i];
  		}
 
- 	} else if(souce > 0){
+ 	} 
+ 	/******* Recieve particles from another SLAVE *******/
+ 	else if(souce > 0){
  		MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  		MPI_Recv(&(tempArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  		MPI_Recv(&(tempArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  		MPI_Recv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  	}
 
+ 	/******* Recieve particles from SLAVE with ID of this slave's rank + 1 % p (we have completed the ring pass) *******/
  	if(source == (my_rank+1)%p){
+ 		//add values of temp array to local array
  		for(i = 0; i < particlesToReceive; i++){
  			localArray_f_x[i] += tempArray_f_x[i];
  			localArray_f_y[i] += tempArray_f_y[i];
  		}
 
+ 		//Send array back to MASTER
  		MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
       	MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
       	MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
@@ -212,6 +219,7 @@ int main(int argc, char* argv[]){
 	 		}
  		}
 
+ 		//Send array to another slave with ID of this slave's rank - 1 + p % p
  		MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
  		MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
       	MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
