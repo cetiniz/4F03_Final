@@ -131,7 +131,7 @@ int main(int argc, char* argv[]){
  		/******* STEP 3: DISTRIBUTE PARTICLES FROM ORIGINAL ARRAYS TO NEW ARRAYS & MARK LOCATION IN ORIGINAL ARRAYS *******/
  		m=0;
       	offset = dest;
-      	for(i = offset; i < row; i+=p){
+      	for(i = offset; i < numParticlesTotal; i+=p){
           	particlesToCompute_s_x[m] = s_x[i];
           	particlesToCompute_s_y[m] = s_y[i];
           	particleWeights = w[i];
