@@ -30,7 +30,7 @@ double computeForce(double particleOnePos, double particleTwoPos, int particleOn
 int main(int argc, char* argv[]){
 	
 	if( argc != 10){
-		printf("Usage: %s numParticlesLight numParticleMedium numParticleHeavy numSteps subSteps timeSubStep imageWidth imageHeight imageFilenamePrex\n", argv[0]);
+		printf("Usage: %s numParticlesLight numParticlesMedium numParticlesHeavy numSteps subSteps timeSubStep imageWidth imageHeight imageFilenamePrex\n", argv[0]);
 	}
 
 	MPI_Init(&argc,&argv);
@@ -43,8 +43,8 @@ int main(int argc, char* argv[]){
 
 	//variables
 	int numParticlesLight = std::stoi(argv[1]);
-	int numParticleMedium = std::stoi(argv[2]);
-	int numParticleHeavy = std::stoi(argv[3]);
+	int numParticlesMedium = std::stoi(argv[2]);
+	int numParticlesHeavy = std::stoi(argv[3]);
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
 
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]){
  			s_y[i] = drand48()*imageHeight;
  			v_x[i] = drand48();
  			v_y[i] = drand48();
- 		} else if(i >= numParticlesLight && i < (numParticlesLight+numParticleMedium)){
+ 		} else if(i >= numParticlesLight && i < (numParticlesLight+numParticlesMedium)){
  			w[i] = 2;
  			s_x[i] = drand48()*imageWidth;
  			s_y[i] = drand48()*imageHeight;
