@@ -117,7 +117,7 @@ int main(int argc, char* argv[]){
  	}
 
 
- 	for (dest = 0; dest < p; dest++){
+ 	for (int dest = 0; dest < p; dest++){
 
  		/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
  		particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
