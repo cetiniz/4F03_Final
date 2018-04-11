@@ -158,7 +158,8 @@ int main(int argc, char* argv[]){
 
  /*************************** SLAVE TASKS **********************************/
  else if(my_rank > 0){
- 	int source = MPI_Status.MPI_SOURCE;
+ 	MPI_Status status;
+ 	int source = status.MPI_SOURCE;
  	localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
  	localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
  	localArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -173,10 +174,10 @@ int main(int argc, char* argv[]){
 
  	/******* Recieve particles from MASTER *******/
  	if(source == 0){
- 		MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
- 		MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
- 		MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
- 		MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
+ 		MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
 
  		for(i = 0; i < particlesToReceive; i++){
  			tempArray_s_x[i] = localArray_s_x[i];
@@ -186,10 +187,10 @@ int main(int argc, char* argv[]){
  	} 
  	/******* Recieve particles from another SLAVE *******/
  	else if(source > 0){
- 		MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
- 		MPI_Recv(&(tempArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
- 		MPI_Recv(&(tempArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
- 		MPI_Recv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &MPI_Status);
+ 		MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(tempArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(tempArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		MPI_Recv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  	}
 
  	/******* Recieve particles from SLAVE with ID of this slave's rank + 1 % p (we have completed the ring pass) *******/
