@@ -158,6 +158,7 @@ int main(int argc, char* argv[]){
 
  /*************************** SLAVE TASKS **********************************/
  else if(my_rank > 0){
+ 	int status = MPI_Status;
  	int source = status.MPI_SOURCE;
  	localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
  	localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
