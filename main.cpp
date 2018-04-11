@@ -134,7 +134,7 @@ int main(int argc, char* argv[]){
       	for(i = offset; i < numParticlesTotal; i+=p){
           	particlesToCompute_s_x[m] = s_x[i];
           	particlesToCompute_s_y[m] = s_y[i];
-          	particleWeights = w[i];
+          	*particleWeights = w[i];
         	pointerForOriginalArray[m] = i;
         	m++;
       	}
