@@ -153,7 +153,7 @@ int main(int argc, char* argv[]){
  			}
 			// /************** RING LOOP WILL GO HERE***************/
  			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
- 				printf("My thread number is %d and my loop (ringNumMaster) is %d", my_rank,ringNum);
+ 				printf("My thread number is %d and my loop (ringNumMaster) is %d", my_rank, ringNumber);
 
 				//Send to dest AND receive from source
  				MPI_Sendrecv(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
