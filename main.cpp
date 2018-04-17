@@ -82,29 +82,29 @@ int main(int argc, char* argv[]){
  	int particlesRemaining = numParticlesTotal%p;
 
  	int * pointerForOriginalArray;
- 	int * particlesToCompute_s_x;
- 	int * particlesToCompute_s_y;
+ 	double * particlesToCompute_s_x;
+ 	double * particlesToCompute_s_y;
  	int * particleWeights;
- 	int * particlesToCompute_v_x;
- 	int * particlesToCompute_v_y;
+ 	double * particlesToCompute_v_x;
+ 	double * particlesToCompute_v_y;
 
 
  	int * pointerForLocalArray;
  	int * pointerForTempArray;
  	int * tempWeights;
  	int * localWeights;
- 	int * localArray_s_x;
- 	int * localArray_s_y;
- 	int * localArray_f_x;
- 	int * localArray_f_y;
- 	int * tempArray_s_x;
- 	int * tempArray_s_y;
- 	int * tempArray_f_x;
- 	int * tempArray_f_y;
+ 	double * localArray_s_x;
+ 	double * localArray_s_y;
+ 	double * localArray_f_x;
+ 	double * localArray_f_y;
+ 	double * tempArray_s_x;
+ 	double * tempArray_s_y;
+ 	double * tempArray_f_x;
+ 	double * tempArray_f_y;
 
  	int * weights;
- 	int * forces_x;
- 	int * forces_y;
+ 	double * forces_x;
+ 	double * forces_y;
 
  	unsigned char* image;
 
@@ -146,8 +146,8 @@ int main(int argc, char* argv[]){
  				/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
  				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
  				/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
- 				particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
- 				particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 				particlesToCompute_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+ 				particlesToCompute_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
  				particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
  				pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
 
@@ -186,9 +186,9 @@ for(i = 1; i < p; i++){
 	source = i;
 	weights = (int *) malloc(particlesToReceive * sizeof(int));
 	MPI_Recv(&(weights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-	forces_x = (int *) malloc(particlesToReceive * sizeof(int));
+	forces_x = (double *) malloc(particlesToReceive * sizeof(double));
 	MPI_Recv(&(forces_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-	forces_y = (int *) malloc(particlesToReceive * sizeof(int));
+	forces_y = (double *) malloc(particlesToReceive * sizeof(double));
 	MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
 	pointerForOriginalArray = (int *) malloc(particlesToReceive * sizeof(int)); //allocate memory for pointer array
 	MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
@@ -212,16 +212,16 @@ saveBMP(argv[9], image, width, height);
  /*************************** SLAVE TASKS **********************************/
  	if(my_rank > 0){
  		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		localArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		localArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		localArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+ 		localArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+ 		localArray_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+ 		localArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
  		pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
  		
- 		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		tempArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		tempArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		tempArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+ 		tempArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+ 		tempArray_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+ 		tempArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 
  	/******* Recieve particles from MASTER *******/
  		for (int numFrames = 0; numFrames < frameTotal; numFrames++){
