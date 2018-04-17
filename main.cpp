@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
 	
 	if( argc != 10){
 		printf("Usage: %s numParticlesLight numParticlesMedium numParticlesHeavy numSteps subSteps timeSubStep imageWidth imageHeight imageFilenamePrex\n", argv[0]);
+		return;
 	}
 
 	MPI_Init(&argc,&argv);
