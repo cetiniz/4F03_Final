@@ -41,6 +41,7 @@ int main(int argc, char* argv[]){
 	
 	if( argc != 10){
 		printf("Usage: %s numParticlesLight numParticlesMedium numParticlesHeavy numSteps subSteps timeSubStep imageWidth imageHeight imageFilenamePrex\n", argv[0]);
+		return 1;
 	}
 
 	MPI_Init(&argc,&argv);
@@ -56,7 +57,7 @@ int main(int argc, char* argv[]){
 	int numParticlesMedium = std::stoi(argv[2]);
 	int numParticlesHeavy = std::stoi(argv[3]);
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
-
+	int frameTotal = 10;
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
  	double * s_x = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in x dimension
  	double * s_y = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in y dimension
@@ -102,6 +103,9 @@ int main(int argc, char* argv[]){
 
  	unsigned char* image;
 
+ 	MPI_Status status;
+ 	int source = status.MPI_SOURCE;
+
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
 
@@ -128,42 +132,49 @@ int main(int argc, char* argv[]){
  			}
  		}
 
+ 		for (int frameNum = 0; frameNum < frameTotal; frameNum++) {
+ 			printf("My thread number is %d and my loop (frame) is %d\n", my_rank,frameNum);
+ 			
+ 			for (int dest = 1; dest < p; dest++){
+ 				printf("My thread number is %d and my loop (masterSetup) is %d\n", my_rank, dest);
 
- 		for (int dest = 0; dest < p; dest++){
-
- 		/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
- 			particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-
- 		/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
- 			particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
- 			particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
- 			particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
+ 				/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
+ 				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+ 				/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
+ 				particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 				particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 				particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 				pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
 
  		/******* STEP 3: DISTRIBUTE PARTICLES FROM ORIGINAL ARRAYS TO NEW ARRAYS & MARK LOCATION IN ORIGINAL ARRAYS *******/
- 		m=0;
- 		offset = dest;
- 		for(i = offset; i < numParticlesTotal; i+=p){
- 			particlesToCompute_s_x[m] = s_x[i];
- 			particlesToCompute_s_y[m] = s_y[i];
- 			*particleWeights = w[i];
- 			pointerForOriginalArray[m] = i;
- 			m++;
- 		}
- 		
+ 				m=0;
+ 				offset = dest;
+ 				for(i = offset; i < numParticlesTotal; i+=p){
+ 					particlesToCompute_s_x[m] = s_x[i];
+ 					particlesToCompute_s_y[m] = s_y[i];
+ 					*particleWeights = w[i];
+ 					pointerForOriginalArray[m] = i;
+ 					m++;
+ 				}
+				/******* SEND ARRAYS TO SLAVE PROCESSORS *******/
+ 				MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+ 				MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+ 				MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+ 				MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
 
-	/******* SEND ARRAYS TO SLAVE PROCESSORS *******/
- 		if (dest > 0){ 
- 			MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 			MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 			MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 			MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 		}
+ 			}
+			// /************** RING LOOP WILL GO HERE***************/
+ 			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
+ 				printf("My thread number is %d and my loop (ringNumMaster) is %d\n", my_rank, ringNumber);
 
-    if(dest == 0){ //Master processor does work to relieve slaves & also when there is only 1 processor
+				//Send to dest AND receive from source
+ 				MPI_Sendrecv(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
+ 				MPI_Sendrecv(&(localArray_f_x[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
+ 				MPI_Sendrecv(&(localArray_f_y[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
+ 				MPI_Sendrecv(&(pointerForOriginalArray[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
 
-    }
-}
+				//Calculate forces
+
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
 for(i = 1; i < p; i++){
@@ -191,82 +202,73 @@ for(i = 1; i < p; i++){
 saveBMP(argv[9], image, width, height);
 }
 
+ 	}
  /*************************** SLAVE TASKS **********************************/
-else if(my_rank > 0){
-	MPI_Status status;
-	int source = status.MPI_SOURCE;
-	localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
-	localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-	localArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-	localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-	localArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-	pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
-	
-	tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-	tempArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-	tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-	tempArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 	else if(my_rank > 0){
+ 		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		localArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		localArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		
+ 		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		tempArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 		tempArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 
  	/******* Recieve particles from MASTER *******/
-	if(source == 0){
-		MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-		MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-		MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-		MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
+ 		for (int numFrames = 0; numFrames < frameTotal; numFrames++){
+ 			printf("My thread number is %d and my loop (slaveFrame) is %d\n", my_rank,numFrames);
+ 			MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+ 			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+ 			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+ 			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 
-		for(i = 0; i < particlesToReceive; i++){
-			tempArray_s_x[i] = localArray_s_x[i];
-			tempArray_s_y[i] = localArray_s_y[i];
+ 			for(i = 0; i < particlesToReceive; i++){
+ 				tempArray_s_x[i] = localArray_s_x[i];
+ 				tempArray_s_y[i] = localArray_s_y[i];
+ 			}
+
+
+			// RING LOOP GOES HERE
+ 			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
+ 				printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
+				/******* Send & Recieve particles from another SLAVE *******/
+ 				MPI_Sendrecv(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
+ 				MPI_Sendrecv(&(localArray_f_x[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
+ 				MPI_Sendrecv(&(localArray_f_y[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
+ 				MPI_Sendrecv(&(pointerForOriginalArray[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status);
+
+				//Calculate forces
+ 				j=0;
+				for(i = 0; i < particlesToReceive; i++){
+				 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive){ //find index where particle number in tempArray is greater than localArray
+				 		j++;
+				 	}
+				 	if(pointerForLocalArray[i] < pointerForTempArray[j]){
+				 		localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 		localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 		tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 	}
+				 }
+
+
+
+
 		}
-
-	} 
- 	/******* Recieve particles from another SLAVE *******/
-	else if(source > 0){
-		MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-		MPI_Recv(&(tempArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-		MPI_Recv(&(tempArray_s_y[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-		MPI_Recv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
-	}
-
- 	/******* Recieve particles from SLAVE with ID of this slave's rank + 1 % p (we have completed the ring pass) *******/
-	if(source == (my_rank+1)%p){
- 		//add values of temp array to local array
-		for(i = 0; i < particlesToReceive; i++){
-			localArray_f_x[i] += tempArray_f_x[i];
-			localArray_f_y[i] += tempArray_f_y[i];
-		}
-
- 		//Send array back to MASTER
+		// FINAL SEND GOES HERE
 		MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
 
-	} else{
-		j=0;
-		for(i = 0; i < particlesToReceive; i++){
-		 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive){ //find index where particle number in tempArray is greater than localArray
-		 		j++;
-		 	}
-		 	if(pointerForLocalArray[i] < pointerForTempArray[j]){
-		 		localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
-		 		localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
-		 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
-		 		tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
-		 	}
-		 }
-
- 		//Send array to another slave with ID of this slave's rank - 1 + p % p
-		 MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
-		 MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
-		 MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
-		 MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, MPI_COMM_WORLD);
-		}
-
 	}
+}
 
-	free(image);
+free(image);
 
-	MPI_Finalize();
-	return 0;
+MPI_Finalize();
+return 0;
 }
