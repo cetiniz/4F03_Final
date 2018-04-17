@@ -118,8 +118,10 @@ int main(int argc, char* argv[]){
  		}
 
  		for (int frameNum = 0; frameNum < frameTotal; frameNum++) {
+ 			printf("My thread number is %d and my loop (frame) is %d", my_rank,frameNum);
  			
  			for (int dest = 1; dest < p; dest++){
+ 				printf("My thread number is %d and my loop (masterSetup) is %d", my_rank, dest);
 
  				/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
  				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
@@ -148,6 +150,7 @@ int main(int argc, char* argv[]){
  			}
 			// /************** RING LOOP WILL GO HERE***************/
  			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
+ 				printf("My thread number is %d and my loop (ringNumMaster) is %d", my_rank,ringNum);
 
 				//Send to dest AND receive from source
  				MPI_Sendrecv(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status)
@@ -186,6 +189,7 @@ int main(int argc, char* argv[]){
 
  	/******* Recieve particles from MASTER *******/
  		for (int numFrames = 0; numFrames < frameTotal; numFrames++){
+ 			printf("My thread number is %d and my loop (slaveFrame) is %d", my_rank,numFrames);
  			MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
  			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
  			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
@@ -199,7 +203,7 @@ int main(int argc, char* argv[]){
 
 			// RING LOOP GOES HERE
  			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
- 				int dest = 
+ 				printf("My thread number is %d and my loop (slaveRingNumber) is %d", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
  				MPI_Sendrecv(&(particleWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status)
  				MPI_Sendrecv(&(localArray_f_x[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 0, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 0, MPI_COMM_WORLD, &status)
