@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
 	int numParticlesMedium = std::stoi(argv[2]);
 	int numParticlesHeavy = std::stoi(argv[3]);
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
-
+	int frameTotal = 10;
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
  	double * s_x = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in x dimension
  	double * s_y = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in y dimension
@@ -117,42 +117,39 @@ int main(int argc, char* argv[]){
  			}
  		}
 
+		for (int frameNum = 0; frameNum < frameTotal; frameNum++) {
+ 		
+			for (int dest = 1; dest < p; dest++){
 
- 		for (int dest = 0; dest < p; dest++){
-
- 		/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
- 			particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-
- 		/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
- 			particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
- 			particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
- 			particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
- 		pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
+ 				/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
+ 				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+ 				/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
+ 				particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 				particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 				particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
+ 				pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
 
  		/******* STEP 3: DISTRIBUTE PARTICLES FROM ORIGINAL ARRAYS TO NEW ARRAYS & MARK LOCATION IN ORIGINAL ARRAYS *******/
- 		m=0;
- 		offset = dest;
- 		for(i = offset; i < numParticlesTotal; i+=p){
- 			particlesToCompute_s_x[m] = s_x[i];
- 			particlesToCompute_s_y[m] = s_y[i];
- 			*particleWeights = w[i];
- 			pointerForOriginalArray[m] = i;
- 			m++;
- 		}
- 		
+ 				m=0;
+ 				offset = dest;
+ 				for(i = offset; i < numParticlesTotal; i+=p){
+ 					particlesToCompute_s_x[m] = s_x[i];
+ 					particlesToCompute_s_y[m] = s_y[i];
+ 					*particleWeights = w[i];
+ 					pointerForOriginalArray[m] = i;
+ 					m++;
+ 				}
+				/******* SEND ARRAYS TO SLAVE PROCESSORS *******/
+ 				MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+ 				MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+ 				MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
+ 				MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
 
-	/******* SEND ARRAYS TO SLAVE PROCESSORS *******/
- 		if (dest > 0){ 
- 			MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 			MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 			MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 			MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 0, MPI_COMM_WORLD);
- 		}
-
-    if(dest == 0){ //Master processor does work to relieve slaves & also when there is only 1 processor
-
-    }
-}
+			}
+			// /************** RING LOOP WILL GO HERE***************/
+			
+			// ***************RECIEVE FINAL DATA HERE**************/
+		}
 
 saveBMP(argv[9], image, width, height);
 }
