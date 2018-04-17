@@ -208,6 +208,7 @@ saveBMP(argv[9], image, width, height);
 }
 
  	}
+ }
  /*************************** SLAVE TASKS **********************************/
  	if(my_rank > 0){
  		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -277,3 +278,4 @@ free(image);
 MPI_Finalize();
 return 0;
 }
+
