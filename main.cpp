@@ -217,12 +217,13 @@ for(i = 1; i < p; i++){
 		s_y[pointerForOriginalArray[j]] += h*v_y[pointerForOriginalArray[j]];
 	}
 }
-
+}
+}
 saveBMP(argv[9], image, width, height);
 }
 
- 	}
- }
+ 	
+ 
  /*************************** SLAVE TASKS **********************************/
  	if(my_rank > 0){
  		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -285,6 +286,7 @@ saveBMP(argv[9], image, width, height);
 		MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
 
 	}
+}
 }
 
 free(image);
