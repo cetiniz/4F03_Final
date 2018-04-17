@@ -23,6 +23,7 @@ double **contigArrayGenerator(int row, int col){
 }
 
 double computeForce(double x1, double y1, int w1, double x2, double y2, int w2, int axisToCompute){
+	double force = 0;
 	int dx = x1-x2; // compute position change in x axis
 	int dy = y1-y2; // compute position change in y axis
 	int distance = sqrt(dx*dx+dy*dy); // compute distance between particles
@@ -30,9 +31,9 @@ double computeForce(double x1, double y1, int w1, double x2, double y2, int w2, 
 
 	/* COMPUTE FORCE */
 	if(axisToCompute == 0){
-		double force = -g*w1*w1/distance3*dx;
+		force = -g*w1*w1/distance3*dx;
 	} else if (axisToCompute == 1){
-		double force = -g*w1*w1/distance3*dy;
+		force = -g*w1*w1/distance3*dy;
 	}
 	return force;
 }
@@ -100,6 +101,10 @@ int main(int argc, char* argv[]){
  	int * tempArray_s_y;
  	int * tempArray_f_x;
  	int * tempArray_f_y;
+
+ 	int * weights;
+ 	int * forces_x;
+ 	int * forces_y;
 
  	unsigned char* image;
 
@@ -204,7 +209,7 @@ saveBMP(argv[9], image, width, height);
 
  	}
  /*************************** SLAVE TASKS **********************************/
- 	else if(my_rank > 0){
+ 	if(my_rank > 0){
  		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
  		localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
  		localArray_f_x = (int *) malloc(sizeof(int) * particlesToReceive); 
