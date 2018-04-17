@@ -287,7 +287,7 @@ saveBMP(argv[9], image, width, height);
 
 	}
 }
-}
+
 
 free(image);
 
