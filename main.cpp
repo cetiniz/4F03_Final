@@ -171,6 +171,7 @@ int main(int argc, char* argv[]){
  		tempArray_f_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 
  	/******* Recieve particles from MASTER *******/
+		for (int numFrames = 0; numFrames < frameTotal; numFrames++){
  		if(source == 0){
  			MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
  			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
@@ -183,6 +184,9 @@ int main(int argc, char* argv[]){
  			}
 
  		} 
+		// RING LOOP GOES HERE
+		// FINAL SEND GOES HERE
+		}
  	/******* Recieve particles from another SLAVE *******/
  		else if(source > 0){
  			MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
