@@ -226,7 +226,7 @@ saveBMP(argv[9], image, width, height);
  	/******* Recieve particles from MASTER *******/
  		for (int numFrames = 0; numFrames < frameTotal; numFrames++){
  			printf("My thread number is %d and my loop (slaveFrame) is %d\n", my_rank,numFrames);
- 			MPI_Recv(&(particleWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+ 			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
  			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
  			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
  			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
