@@ -211,7 +211,7 @@ int main(int argc, char* argv[]){
 				//MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_DOUBLE, source, 0, MPI_COMM_WORLD, &status);
 				//MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
 
-				for(j = 0; j < particlesToReceive; j++){
+				/*for(j = 0; j < particlesToReceive; j++){
 					v_x[pointerForOriginalArray[j]] += h*forces_x[j]/weights[j];
 					v_y[pointerForOriginalArray[j]] += h*forces_y[j]/weights[j];
 				}
@@ -219,7 +219,7 @@ int main(int argc, char* argv[]){
 				for(j = 0; j < particlesToReceive; j++){
 					s_x[pointerForOriginalArray[j]] += h*v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += h*v_y[pointerForOriginalArray[j]];
-				}
+				}*/
 			}
 		}
 		saveBMP(argv[9], image, width, height);
@@ -286,7 +286,7 @@ int main(int argc, char* argv[]){
 
 				}
 		// FINAL SEND GOES HERE
-				MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
+				MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
 				//MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
 				//MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
 				//MPI_Send(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD);
