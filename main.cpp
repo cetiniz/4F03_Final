@@ -211,7 +211,7 @@ int main(int argc, char* argv[]){
 				MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_DOUBLE, source, 0, MPI_COMM_WORLD, &status);
 				MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
 
-				/*for(j = 0; j < particlesToReceive; j++){
+				for(j = 0; j < particlesToReceive; j++){
 					v_x[pointerForOriginalArray[j]] += h*forces_x[j]/weights[j];
 					v_y[pointerForOriginalArray[j]] += h*forces_y[j]/weights[j];
 				}
@@ -219,7 +219,7 @@ int main(int argc, char* argv[]){
 				for(j = 0; j < particlesToReceive; j++){
 					s_x[pointerForOriginalArray[j]] += h*v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += h*v_y[pointerForOriginalArray[j]];
-				}*/
+				}
 			}
 		}
 		saveBMP(argv[9], image, width, height);
@@ -269,7 +269,7 @@ int main(int argc, char* argv[]){
 
 				//Calculate forces
 				j=0;
-				/*for(i = 0; i < particlesToReceive; i++){
+				for(i = 0; i < particlesToReceive; i++){
 				 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive){ //find index where particle number in tempArray is greater than localArray
 				 		j++;
 				 	}
@@ -279,7 +279,7 @@ int main(int argc, char* argv[]){
 				 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
 				 		tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
 				 	}
-				 }*/
+				 }
 
 
 
