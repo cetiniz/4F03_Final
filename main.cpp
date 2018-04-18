@@ -175,6 +175,7 @@ int main(int argc, char* argv[]){
 
 			}
 
+			particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
  			// /************** ALLOCATED FOR MASTER ***************/
 			localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 			localArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
