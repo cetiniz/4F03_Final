@@ -148,6 +148,7 @@ int main(int argc, char* argv[]){
 			for (int dest = 1; dest < p; dest++){
 				printf("My thread number is %d and my loop (masterSetup) is %d\n", my_rank, dest);
 				/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
+				printf("My thread number is %d and my masterSetupParticlesToReceive is %d\n", my_rank,particlesToReceive);
  				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
  						/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
@@ -176,6 +177,7 @@ int main(int argc, char* argv[]){
 			}
 
 			particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+			printf("My thread number is %d and my MasterParticlesToReceive is %d\n", my_rank,particlesToReceive);
  			// /************** ALLOCATED FOR MASTER ***************/
 			localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 			localArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
@@ -247,6 +249,7 @@ int main(int argc, char* argv[]){
  /*************************** SLAVE TASKS **********************************/
 	if(my_rank > 0){
  		particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+ 		printf("My thread number is %d and my SlaveParticlesToReceive is %d\n", my_rank,particlesToReceive);
 		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 		localArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
 		localArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
