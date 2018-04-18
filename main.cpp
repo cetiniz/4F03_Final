@@ -57,6 +57,9 @@ int main(int argc, char* argv[]){
 	int numParticlesLight = std::stoi(argv[1]);
 	int numParticlesMedium = std::stoi(argv[2]);
 	int numParticlesHeavy = std::stoi(argv[3]);
+	int numSteps = std::stoi(argv[4]);
+	int numSubSteps = std::stoi(argv[5]);
+	int timeSubSteps = std::stoi(argv[6]);
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
 	int frameTotal = 10;
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
@@ -67,13 +70,13 @@ int main(int argc, char* argv[]){
  	double **f_x = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in x dimension
  	double **f_y = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in y dimension
 
- 	int h = std::stoi(argv[6]);
+ 	//CHANGE THIS
+ 	//int h = std::stoi(argv[6]);
+ 	int h = 4;
 
  	int imageWidth = std::stoi(argv[7]);
  	int imageHeight = std::stoi(argv[8]);
 
- 	int numSteps = 0;
- 	int subSteps = 0;
  	double timeSubStep;
 
  	int width, height;
@@ -198,6 +201,18 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(pointerForLocalArray[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 4, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 4, MPI_COMM_WORLD, &status);
 
 				//Calculate forces
+				j=0;
+				for(i = 0; i < particlesToReceive; i++){
+				 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive){ //find index where particle number in tempArray is greater than localArray
+				 		j++;
+				 	}
+				 	if(pointerForLocalArray[i] < pointerForTempArray[j]){
+				 		localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 		localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 		tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 	}
+				 }
 			}
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
@@ -221,8 +236,9 @@ int main(int argc, char* argv[]){
 					s_y[pointerForOriginalArray[j]] += h*v_y[pointerForOriginalArray[j]];
 				}
 			}
+			saveBMP(argv[9], image, width, height);
 		}
-		saveBMP(argv[9], image, width, height);
+		
 	}
 
 
