@@ -138,11 +138,6 @@ int main(int argc, char* argv[]){
  		}
 
  		
-		/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
- 		particlesToCompute_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
- 		particlesToCompute_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
- 		particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
-		pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
 
 		for (int frameNum = 0; frameNum < frameTotal; frameNum++) {
 			printf("My thread number is %d and my loop (frame) is %d\n", my_rank,frameNum);
@@ -151,6 +146,12 @@ int main(int argc, char* argv[]){
 				printf("My thread number is %d and my loop (masterSetup) is %d\n", my_rank, dest);
 				/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
  				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+
+ 						/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
+		 		particlesToCompute_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+		 		particlesToCompute_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+		 		particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
+				pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive); //contains pointers that store location of original matrix location (when the Master gathers everything back at the end)
 
 				
  		/******* STEP 3: DISTRIBUTE PARTICLES FROM ORIGINAL ARRAYS TO NEW ARRAYS & MARK LOCATION IN ORIGINAL ARRAYS *******/
