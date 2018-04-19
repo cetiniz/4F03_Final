@@ -70,10 +70,6 @@ int main(int argc, char* argv[]){
  	double **f_x = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in x dimension
  	double **f_y = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in y dimension
 
- 	//CHANGE THIS
- 	//int h = std::stoi(argv[6]);
- 	int h = 4;
-
  	int imageWidth = std::stoi(argv[7]);
  	int imageHeight = std::stoi(argv[8]);
 
@@ -230,13 +226,13 @@ int main(int argc, char* argv[]){
 				MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, source, 0, MPI_COMM_WORLD, &status);
 
 				for(j = 0; j < particlesToReceive; j++){
-					v_x[pointerForOriginalArray[j]] += h*forces_x[j]/weights[j];
-					v_y[pointerForOriginalArray[j]] += h*forces_y[j]/weights[j];
+					v_x[pointerForOriginalArray[j]] += timeSubSteps*forces_x[j]/weights[j];
+					v_y[pointerForOriginalArray[j]] += timeSubSteps*forces_y[j]/weights[j];
 				}
 
 				for(j = 0; j < particlesToReceive; j++){
-					s_x[pointerForOriginalArray[j]] += h*v_x[pointerForOriginalArray[j]];
-					s_y[pointerForOriginalArray[j]] += h*v_y[pointerForOriginalArray[j]];
+					s_x[pointerForOriginalArray[j]] += timeSubSteps*v_x[pointerForOriginalArray[j]];
+					s_y[pointerForOriginalArray[j]] += timeSubSteps*v_y[pointerForOriginalArray[j]];
 				}
 			}
 			saveBMP(argv[9], image, width, height);
