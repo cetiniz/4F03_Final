@@ -232,7 +232,11 @@ int main(int argc, char* argv[]){
 				}
 			}
 			if (frameNum % numSubSteps == 0) {
-				saveBMP(argv[9], image, width, height);
+				int frameOut = frameNum / numSubSteps;
+				char result[50];
+				sprintf(result, "%d", frameOut);
+				strcat(result, argv[9]);
+				saveBMP(result,image, width, height);
 			}
 		}
 		
