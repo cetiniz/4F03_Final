@@ -61,7 +61,6 @@ int main(int argc, char* argv[]){
 	int numSubSteps = std::stoi(argv[5]);
 	int timeSubSteps = std::stoi(argv[6]);
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
-	int frameTotal = 10;
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
  	double * s_x = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in x dimension
  	double * s_y = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in y dimension
@@ -138,15 +137,14 @@ int main(int argc, char* argv[]){
 
  		
 
-		for (int frameNum = 0; frameNum < frameTotal; frameNum++) {
+		for (int frameNum = 0; frameNum < numSteps * numSubSteps; frameNum++) {
 			printf("My thread number is %d and my loop (frame) is %d\n", my_rank,frameNum);
 			
 			for (int dest = 1; dest < p; dest++){
 				printf("My thread number is %d and my loop (masterSetup) is %d\n", my_rank, dest);
 				/******* STEP 1: ALLOCATE NUMBER OF PARTICLES TO EACH PROCESSOR *******/
-				printf("My thread number is %d and my masterSetupParticlesToReceive is %d\n", my_rank,particlesToReceive);
  				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-
+				printf("I am thread %d and my masterSetupParticlesToReceive is %d\n", dest,particlesToReceive);
  						/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
 		 		particlesToCompute_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
 		 		particlesToCompute_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
@@ -172,8 +170,6 @@ int main(int argc, char* argv[]){
 
 			}
 
-			particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-			printf("My thread number is %d and my MasterParticlesToReceive is %d\n", my_rank,particlesToReceive);
  			// /************** ALLOCATED FOR MASTER ***************/
 			localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 			localArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
@@ -235,7 +231,9 @@ int main(int argc, char* argv[]){
 					s_y[pointerForOriginalArray[j]] += timeSubSteps*v_y[pointerForOriginalArray[j]];
 				}
 			}
-			saveBMP(argv[9], image, width, height);
+			if (frameNum % numSubSteps == 0) {
+				saveBMP(argv[9], image, width, height);
+			}
 		}
 		
 	}
@@ -261,7 +259,7 @@ int main(int argc, char* argv[]){
 		pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
  	/******* Recieve particles from MASTER *******/
-		for (int numFrames = 0; numFrames < frameTotal; numFrames++){
+		for (int numFrames = 0; numFrames < numSteps * numSubSteps; numFrames++){
 			printf("My thread number is %d and my loop (slaveFrame) is %d\n", my_rank,numFrames);
 			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
