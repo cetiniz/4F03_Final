@@ -104,7 +104,7 @@ int main(int argc, char* argv[]){
  	double * forces_x;
  	double * forces_y;
 
- 	unsigned char* image = (unsigned char *) malloc(3*imageWidth*imageHeight);
+ 	unsigned char* image = (unsigned char *) malloc(sizeof(unsigned char) 3*imageWidth*imageHeight);
 
  	MPI_Status status;
  	int source = status.MPI_SOURCE;
