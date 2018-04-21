@@ -117,8 +117,6 @@ int main(int argc, char* argv[]){
  		printf("LIGHT PARTICLES: %d\n",numParticlesMedium);
  		printf("LIGHT PARTICLES: %d\n",numParticlesHeavy);
  		for(i = 0; i < numParticlesTotal; i++){
- 			srand (time(NULL));
- 			double drand48(void);
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
  				printf("Particle weight: %d\n",w[i]);
