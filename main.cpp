@@ -130,18 +130,18 @@ int main(int argc, char* argv[]){
  				printf("Initial velocities, x: %f, y: %f\n",v_x[i],v_y[i]);
  				numParticlesLight--;
  			} else if(numParticlesMedium > 0){
- 				w[i] = rand() % (massMediumMax-massMediumMin+1) + massMediumMin;
+ 				w[i] = drand48() * (massMediumMax-massMediumMin+1) + massMediumMin;
   				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				v_x[i] = rand() % (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
- 				v_y[i] = rand() % (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
+ 				v_x[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
+ 				v_y[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
  				numParticlesMedium--;
  			} else if(numParticlesHeavy > 0){
- 				w[i] = rand() % (massHeavyMax-massHeavyMin+1) + massHeavyMin;
+ 				w[i] = drand48() * (massHeavyMax-massHeavyMin+1) + massHeavyMin;
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				v_x[i] = rand() % (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
- 				v_y[i] = rand() % (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
+ 				v_x[i] = drand48() * (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
+ 				v_y[i] = drand48() * (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
  				numParticlesHeavy--;
  			}
  		}
