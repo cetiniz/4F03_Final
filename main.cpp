@@ -237,7 +237,7 @@ int main(int argc, char* argv[]){
 				}
 			}
 
-			 	unsigned char* image = (unsigned char *) malloc(sizeof(unsigned char) *3*imageWidth*imageHeight);
+			unsigned char* image = (unsigned char *) malloc(sizeof(unsigned char) *3*imageWidth*imageHeight);
 			// distribute particle colours at given position to array to create image
 
 			for(i = 0; i < numParticlesTotal; i++){
@@ -319,6 +319,7 @@ int main(int argc, char* argv[]){
 				 		j++;
 				 	}
 				 	if(pointerForLocalArray[i] < pointerForTempArray[j]){
+				 		printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[i]);
 				 		localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
 				 		localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
 				 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
