@@ -125,8 +125,9 @@ int main(int argc, char* argv[]){
  				s_x[i] = drand48() * imageWidth;
  				s_y[i] = drand48() * imageHeight;
  				printf("Initial positions, x: %d, y: %d\n",s_x[i],s_y[i]);
- 				v_x[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
- 				v_y[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 				v_x[i] = drand48() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 				v_y[i] = drand48() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 				printf("Initial velocities, x: %d, y: %d\n",v_x[i],v_y[i]);
  				numParticlesLight--;
  			} else if(numParticlesMedium > 0){
  				w[i] = rand() % (massMediumMax-massMediumMin+1) + massMediumMin;
