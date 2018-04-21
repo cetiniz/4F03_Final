@@ -4,25 +4,25 @@
 #include "vector3d.h"
 
 //light particles are the fastest
-double velocityLightMin = 11;
-double velocityLightMax = 15;
+int velocityLightMin = 11;
+int velocityLightMax = 15;
 
-double velocityMediumMin = 6;
-double velocityMediumMax = 10;
+int velocityMediumMin = 6;
+int velocityMediumMax = 10;
 
 //heavy particles are the slowest
-double velocityHeavyMin = 1;
-double velocityHeavyMax = 5;
+int velocityHeavyMin = 1;
+int velocityHeavyMax = 5;
 
 //mass
-double massLightMin = 1;
-double massLightMax = 5;
+int massLightMin = 1;
+int massLightMax = 5;
 
-double massMediumMin = 6;
-double massMediumMax = 10;
+int massMediumMin = 6;
+int massMediumMax = 10;
 
-double massHeavyMin = 11;
-double massHeavyMax = 15;
+int massHeavyMin = 11;
+int massHeavyMax = 15;
 
 
 //colours
