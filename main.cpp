@@ -118,12 +118,14 @@ int main(int argc, char* argv[]){
  		printf("LIGHT PARTICLES: %d\n",numParticlesHeavy);
  		for(i = 0; i < numParticlesTotal; i++){
  			srand (time(NULL));
- 			double drand48();
+ 			double drand48(void);
  			if(numParticlesLight > 0){
  				w[i] = rand() % (massLightMax-massLightMin+1) + massLightMin;
+ 				int number = drand48(void) * 10;
+ 				printf("random number: %d\n", number);
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				printf("Particle positions, x: %d, y: %d\n",s_x[i],s_y[i]);
+ 				printf("Initial positions, x: %d, y: %d\n",s_x[i],s_y[i]);
  				v_x[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  				v_y[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  				numParticlesLight--;
