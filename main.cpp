@@ -104,7 +104,7 @@ int main(int argc, char* argv[]){
  	double * forces_x;
  	double * forces_y;
 
- 	unsigned char* image;
+ 	unsigned char* image = (unsigned char *) malloc(sizeof(unsigned char) * imageWidth*imageHeight);
 
  	MPI_Status status;
  	int source = status.MPI_SOURCE;
@@ -115,27 +115,26 @@ int main(int argc, char* argv[]){
  	/******** Allocate particle weight, position, and velocity to array ********/
  		for(i = 0; i < numParticlesTotal; i++){
  			if(i < numParticlesLight){
- 				w[i] = 1;
+ 				w[i] = rand % (massLightMin-massLightMax+1) + massLightMin;
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				v_x[i] = drand48();
- 				v_y[i] = drand48();
+ 				v_x[i] = rand % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 				v_y[i] = rand % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  			} else if(i >= numParticlesLight && i < (numParticlesLight+numParticlesMedium)){
- 				w[i] = 2;
- 				s_x[i] = drand48()*imageWidth;
+ 				w[i] = w[i] = rand % (massMediumMin-massMediumMax+1) + massMediumMin;
+  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				v_x[i] = drand48();
- 				v_y[i] = drand48();
+ 				v_x[i] = rand % (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
+ 				v_y[i] = rand % (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
  			} else{
- 				w[i] = 3;
+ 				w[i] = rand % (massHeavyMin-massHeavyMax+1) + massHeavyMin;
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				v_x[i] = drand48();
- 				v_y[i] = drand48();
+ 				v_x[i] = rand % (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
+ 				v_y[i] = rand % (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
  			}
  		}
 
- 		
 
 		for (int frameNum = 0; frameNum < numSteps * numSubSteps; frameNum++) {
 			printf("My thread number is %d and my loop (frame) is %d\n", my_rank,frameNum);
@@ -231,6 +230,18 @@ int main(int argc, char* argv[]){
 					s_y[pointerForOriginalArray[j]] += timeSubSteps*v_y[pointerForOriginalArray[j]];
 				}
 			}
+			// distribute particle colours at given position to array to create image
+			for(i = 0; i < numParticlesTotal; i++){
+				int index = s_y[i]*width + s_x[i];
+				if(w[i] >= 1 && w[i] <= 5){
+					image[index] = colourLight;
+				} else if(w[i] >= 6 && w[i] <= 10){
+					image[index] = colourMedium;
+				} else{
+					image[index] = colourHeavy;
+				}
+			}
+			// Make sure LOGIC HERE IS SOUND
 			if (frameNum % numSubSteps == 0) {
 				int frameOut = frameNum / numSubSteps;
 				char result[50];
