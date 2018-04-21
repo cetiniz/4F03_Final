@@ -233,7 +233,7 @@ int main(int argc, char* argv[]){
 			}
 			// distribute particle colours at given position to array to create image
 			for(i = 0; i < numParticlesTotal; i++){
-				int index = (s_y[i]*width + s_x[i])*3;
+				int index = (s_y[i]*imageWidth + s_x[i])*3;
 				if(w[i] >= 1 && w[i] <= 5){
 					image[index+2] = 1;
 				} else if(w[i] >= 6 && w[i] <= 10){
@@ -248,7 +248,7 @@ int main(int argc, char* argv[]){
 				char result[50];
 				sprintf(result, "%d", frameOut);
 				strcat(result, argv[9]);
-				saveBMP(result,image, width, height);
+				saveBMP(result,image, imageWidth, imageHeight);
 			}
 		}
 		
