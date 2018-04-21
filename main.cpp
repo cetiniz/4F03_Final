@@ -63,15 +63,15 @@ int main(int argc, char* argv[]){
 	int timeSubSteps = std::stoi(argv[6]);
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
- 	double * s_x = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in x dimension
- 	double * s_y = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store positions of particles in y dimension
+ 	int * s_x = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store positions of particles in x dimension
+ 	int * s_y = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store positions of particles in y dimension
  	double * v_x = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store velocities of particles in x dimesion
  	double * v_y = (double *) malloc(sizeof(double) * numParticlesTotal); //array to store velocities of particles in y dimesion
  	double **f_x = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in x dimension
  	double **f_y = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in y dimension
 
- 	double imageWidth = std::stoi(argv[7]);
- 	double imageHeight = std::stoi(argv[8]);
+ 	int imageWidth = std::stoi(argv[7]);
+ 	int imageHeight = std::stoi(argv[8]);
 
  	double timeSubStep;
 
@@ -123,8 +123,8 @@ int main(int argc, char* argv[]){
  				w[i] = rand() % (massLightMax-massLightMin+1) + massLightMin;
  				int number = drand48() * 10;
  				printf("random number: %d\n", number);
- 				s_x[i] = drand48()*imageWidth;
- 				s_y[i] = drand48()*imageHeight;
+ 				s_x[i] = drand48() * imageWidth;
+ 				s_y[i] = drand48() * imageHeight;
  				printf("Initial positions, x: %d, y: %d\n",s_x[i],s_y[i]);
  				v_x[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  				v_y[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
