@@ -182,16 +182,16 @@ int main(int argc, char* argv[]){
 
  			// /************** ALLOCATED FOR MASTER ***************/
 			localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
-			localArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+			localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 			localArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
-			localArray_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+			localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 			localArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 			pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
 			tempWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
-			tempArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+			tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 			tempArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
-			tempArray_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+			tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 			tempArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 			pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
@@ -281,16 +281,16 @@ int main(int argc, char* argv[]){
  		particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
  		printf("My thread number is %d and my SlaveParticlesToReceive is %d\n", my_rank,particlesToReceive);
 		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
-		localArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+		localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 		localArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
-		localArray_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+		localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 		localArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 		pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
 		tempWeights = (int *) malloc(sizeof(int) * particlesToReceive);
-		tempArray_s_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 		tempArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
-		tempArray_s_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 		tempArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
 		pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
