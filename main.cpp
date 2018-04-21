@@ -235,11 +235,17 @@ int main(int argc, char* argv[]){
 			for(i = 0; i < numParticlesTotal; i++){
 				int index = (s_y[i]*imageWidth + s_x[i])*3;
 				if(w[i] >= 1 && w[i] <= 5){
-					image[index+2] = 1;
+					image[index] = 68;
+					image[index+1] = 214;
+					image[index+2] = 44;
 				} else if(w[i] >= 6 && w[i] <= 10){
-					image[index+1] = 1;
+					image[index] = 206;
+					image[index+1] = 0;
+					image[index+2] = 86;
 				} else{
-					image[index] = 1;
+					image[index] = 116;
+					image[index+1] = 209;
+					image[index+2] = 234;
 				}
 			}
 			// Make sure LOGIC HERE IS SOUND
