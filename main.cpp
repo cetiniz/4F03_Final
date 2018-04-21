@@ -147,6 +147,7 @@ int main(int argc, char* argv[]){
  		}
 
 
+
 		for (int frameNum = 0; frameNum < numSteps * numSubSteps; frameNum++) {
 			printf("My thread number is %d and my loop (frame) is %d\n", my_rank,frameNum);
 			
@@ -239,6 +240,7 @@ int main(int argc, char* argv[]){
 				for(j = 0; j < particlesToReceive; j++){
 					s_x[pointerForOriginalArray[j]] += timeSubSteps*v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += timeSubSteps*v_y[pointerForOriginalArray[j]];
+					printf("Next positions, x: %d, y: %d\n",s_x[i],s_y[i]);
 				}
 			}
 
