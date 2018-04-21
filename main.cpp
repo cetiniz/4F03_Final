@@ -116,6 +116,7 @@ int main(int argc, char* argv[]){
  		printf("LIGHT PARTICLES: %d\n",numParticlesLight);
  		printf("LIGHT PARTICLES: %d\n",numParticlesMedium);
  		printf("LIGHT PARTICLES: %d\n",numParticlesHeavy);
+ 		double drand48();
  		for(i = 0; i < numParticlesTotal; i++){
  			srand (time(NULL));
  			if(numParticlesLight > 0){
