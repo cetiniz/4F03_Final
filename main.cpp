@@ -110,11 +110,11 @@ int main(int argc, char* argv[]){
 
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
-
+ 		printf("TOTAL PARTICLE: %d\n",numParticlesTotal);
  	/******** Allocate particle weight, position, and velocity to array ********/
- 		printf("LIGHT PARTICLES: %d",numParticlesLight);
- 		printf("LIGHT PARTICLES: %d",numParticlesMedium);
- 		printf("LIGHT PARTICLES: %d",numParticlesHeavy);
+ 		printf("LIGHT PARTICLES: %d\n",numParticlesLight);
+ 		printf("LIGHT PARTICLES: %d\n",numParticlesMedium);
+ 		printf("LIGHT PARTICLES: %d\n",numParticlesHeavy);
  		for(i = 0; i < numParticlesTotal; i++){
  			srand (time(NULL));
  			if(numParticlesLight > 0){
