@@ -23,7 +23,7 @@ double **contigArrayGenerator(int row, int col){
 	return contigarray;
 }
 
-double computeForce(double x1, double y1, int w1, double x2, double y2, int w2, int axisToCompute){
+double computeForce(int x1, int y1, int w1, int x2, int y2, int w2, int axisToCompute){
 	double force = 0;
 	int dx = x1-x2; // compute position change in x axis
 	int dy = y1-y2; // compute position change in y axis
@@ -92,12 +92,12 @@ int main(int argc, char* argv[]){
  	int * pointerForTempArray;
  	int * tempWeights;
  	int * localWeights;
- 	double * localArray_s_x;
- 	double * localArray_s_y;
+ 	int * localArray_s_x;
+ 	int * localArray_s_y;
  	double * localArray_f_x;
  	double * localArray_f_y;
- 	double * tempArray_s_x;
- 	double * tempArray_s_y;
+ 	int * tempArray_s_x;
+ 	int * tempArray_s_y;
  	double * tempArray_f_x;
  	double * tempArray_f_y;
 
