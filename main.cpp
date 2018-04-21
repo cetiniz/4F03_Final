@@ -70,8 +70,8 @@ int main(int argc, char* argv[]){
  	double **f_x = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in x dimension
  	double **f_y = contigArrayGenerator(numParticlesTotal,numParticlesTotal); //matrix to store forces of particles in y dimension
 
- 	int imageWidth = std::stoi(argv[7]);
- 	int imageHeight = std::stoi(argv[8]);
+ 	double imageWidth = std::stoi(argv[7]);
+ 	double imageHeight = std::stoi(argv[8]);
 
  	double timeSubStep;
 
@@ -116,9 +116,9 @@ int main(int argc, char* argv[]){
  		printf("LIGHT PARTICLES: %d\n",numParticlesLight);
  		printf("LIGHT PARTICLES: %d\n",numParticlesMedium);
  		printf("LIGHT PARTICLES: %d\n",numParticlesHeavy);
- 		double drand48();
  		for(i = 0; i < numParticlesTotal; i++){
  			srand (time(NULL));
+ 			double drand48();
  			if(numParticlesLight > 0){
  				w[i] = rand() % (massLightMax-massLightMin+1) + massLightMin;
  				s_x[i] = drand48()*imageWidth;
