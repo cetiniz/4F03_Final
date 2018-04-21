@@ -130,7 +130,7 @@ int main(int argc, char* argv[]){
  				v_y[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  				numParticlesLight--;
  			} else if(numParticlesMedium > 0){
- 				w[i] = w[i] = rand() % (massMediumMax-massMediumMin+1) + massMediumMin;
+ 				w[i] = rand() % (massMediumMax-massMediumMin+1) + massMediumMin;
   				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
  				v_x[i] = rand() % (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
