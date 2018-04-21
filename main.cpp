@@ -112,6 +112,9 @@ int main(int argc, char* argv[]){
  	if(my_rank == 0){
 
  	/******** Allocate particle weight, position, and velocity to array ********/
+ 		printf("LIGHT PARTICLES: %d",numParticlesLight);
+ 		printf("LIGHT PARTICLES: %d",numParticlesMedium);
+ 		printf("LIGHT PARTICLES: %d",numParticlesHeavy);
  		for(i = 0; i < numParticlesTotal; i++){
  			srand (time(NULL));
  			if(numParticlesLight > 0){
