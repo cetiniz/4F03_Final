@@ -239,7 +239,7 @@ int main(int argc, char* argv[]){
 				} else if(w[i] >= 6 && w[i] <= 10){
 					image[index+1] = 1;
 				} else{
-					image[index] = colourHeavy;
+					image[index] = 1;
 				}
 			}
 			// Make sure LOGIC HERE IS SOUND
