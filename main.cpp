@@ -118,21 +118,21 @@ int main(int argc, char* argv[]){
  		for(i = 0; i < numParticlesTotal; i++){
  			srand (time(NULL));
  			if(numParticlesLight > 0){
- 				w[i] = rand() % (massLightMin-massLightMax+1) + massLightMin;
+ 				w[i] = rand() % (massLightMax-massLightMin+1) + massLightMin;
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
  				v_x[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  				v_y[i] = rand() % (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  				numParticlesLight--;
  			} else if(numParticlesMedium > 0){
- 				w[i] = w[i] = rand() % (massMediumMin-massMediumMax+1) + massMediumMin;
+ 				w[i] = w[i] = rand() % (massMediumMax-massMediumMin+1) + massMediumMin;
   				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
  				v_x[i] = rand() % (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
  				v_y[i] = rand() % (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
  				numParticlesMedium--;
  			} else if(numParticlesHeavy > 0){
- 				w[i] = rand() % (massHeavyMin-massHeavyMax+1) + massHeavyMin;
+ 				w[i] = rand() % (massHeavyMax-massHeavyMin+1) + massHeavyMin;
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
  				v_x[i] = rand() % (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
@@ -242,11 +242,11 @@ int main(int argc, char* argv[]){
 
 			for(i = 0; i < numParticlesTotal; i++){
 				int index = (s_y[i]*imageWidth + s_x[i])*3;
-				if(w[i] >= 1 && w[i] <= 5){
+				if(w[i] >= massLightMin && w[i] <= massLightMax){
 					image[index] = 68;
 					image[index+1] = 214;
 					image[index+2] = 44;
-				} else if(w[i] >= 6 && w[i] <= 10){
+				} else if(w[i] >= massMediumMin && w[i] <= massMediumMax){
 					image[index] = 206;
 					image[index+1] = 0;
 					image[index+2] = 86;
