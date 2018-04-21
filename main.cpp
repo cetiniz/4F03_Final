@@ -81,8 +81,8 @@ int main(int argc, char* argv[]){
  	int particlesRemaining = numParticlesTotal%p;
 
  	int * pointerForOriginalArray;
- 	double * particlesToCompute_s_x;
- 	double * particlesToCompute_s_y;
+ 	int * particlesToCompute_s_x;
+ 	int * particlesToCompute_s_y;
  	int * particleWeights;
  	double * particlesToCompute_v_x;
  	double * particlesToCompute_v_y;
