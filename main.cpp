@@ -264,6 +264,7 @@ int main(int argc, char* argv[]){
 				strcat(result, argv[9]);
 				saveBMP(result,image, imageWidth, imageHeight);
 			}
+			free(image);
 		}
 		
 	}
@@ -337,9 +338,6 @@ int main(int argc, char* argv[]){
 
 			}
 		}
-
-
-		free(image);
 
 		MPI_Finalize();
 		return 0;
