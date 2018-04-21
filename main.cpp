@@ -121,7 +121,7 @@ int main(int argc, char* argv[]){
  			double drand48(void);
  			if(numParticlesLight > 0){
  				w[i] = rand() % (massLightMax-massLightMin+1) + massLightMin;
- 				int number = drand48(void) * 10;
+ 				int number = drand48() * 10;
  				printf("random number: %d\n", number);
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
