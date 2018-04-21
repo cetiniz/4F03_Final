@@ -104,7 +104,6 @@ int main(int argc, char* argv[]){
  	double * forces_x;
  	double * forces_y;
 
- 	unsigned char* image; 
 
  	MPI_Status status;
  	int source = status.MPI_SOURCE;
@@ -232,7 +231,7 @@ int main(int argc, char* argv[]){
 				}
 			}
 
-			image = (unsigned char *) malloc(sizeof(unsigned char) *3*imageWidth*imageHeight);
+			 	unsigned char* image = (unsigned char *) malloc(sizeof(unsigned char) *3*imageWidth*imageHeight);
 			// distribute particle colours at given position to array to create image
 
 			for(i = 0; i < numParticlesTotal; i++){
