@@ -184,9 +184,9 @@ int main(int argc, char* argv[]){
 				if (dest == 0) {
 					masterWeights = particleWeights;
 	 				masterArray_s_x = particlesToCompute_s_x;
-					masterArray_f_x;
+					masterArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive);
 					masterArray_s_y = particlesToCompute_s_y;
-					masterArray_f_y;
+					masterArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
 					masterPointerForLocalArray = pointerForOriginalArray;
 				}
 				else {
@@ -211,8 +211,8 @@ int main(int argc, char* argv[]){
 				 		j++;
 				 	}
 				 	if(pointerForLocalArray[i] < pointerForTempArray[j]){
-				 		localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
-				 		localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 		masterArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 		masterArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
 				 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
 				 		tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
 				 	}
@@ -220,24 +220,34 @@ int main(int argc, char* argv[]){
 			}
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
-			for(i = 1; i < p; i++){
-				source = i;
-				weights = (int *) malloc(particlesToReceive * sizeof(int));
-				MPI_Recv(&(weights[0]), particlesToReceive, MPI_INT, source, 6, MPI_COMM_WORLD, &status);
-				forces_x = (double *) malloc(particlesToReceive * sizeof(double));
-				MPI_Recv(&(forces_x[0]), particlesToReceive, MPI_DOUBLE, source, 6, MPI_COMM_WORLD, &status);
-				forces_y = (double *) malloc(particlesToReceive * sizeof(double));
-				MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_DOUBLE, source, 6, MPI_COMM_WORLD, &status);
-				MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, source, 6, MPI_COMM_WORLD, &status);
+			for(int dest = 0; dest < p; dest++) {
 
-				for(j = 0; j < particlesToReceive; j++){
-					v_x[pointerForOriginalArray[j]] += timeSubSteps*forces_x[j]/weights[j];
-					v_y[pointerForOriginalArray[j]] += timeSubSteps*forces_y[j]/weights[j];
+				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				weights = (int *) malloc(particlesToReceive * sizeof(int));
+				forces_x = (double *) malloc(particlesToReceive * sizeof(double));
+				forces_y = (double *) malloc(particlesToReceive * sizeof(double));
+
+				if (dest == 0) {
+					weights = masterWeights;
+					forces_x = masterArray_f_x;
+					forces_y = masterArray_f_y;
+					pointerForOriginalArray = masterPointerForLocalArray;
+				}
+				else {
+					MPI_Recv(&(weights[0]), particlesToReceive, MPI_INT, dest, 6, MPI_COMM_WORLD, &status);
+					MPI_Recv(&(forces_x[0]), particlesToReceive, MPI_DOUBLE, dest, 6, MPI_COMM_WORLD, &status);
+					MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_DOUBLE, dest, 6, MPI_COMM_WORLD, &status);
+					MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 6, MPI_COMM_WORLD, &status);
+				}
+				
+				for(j = 0; j < particlesToReceive; j++) {
+					v_x[pointerForOriginalArray[j]] += timeSubSteps * forces_x[j]/weights[j];
+					v_y[pointerForOriginalArray[j]] += timeSubSteps * forces_y[j]/weights[j];
 				}
 
-				for(j = 0; j < particlesToReceive; j++){
-					s_x[pointerForOriginalArray[j]] += timeSubSteps*v_x[pointerForOriginalArray[j]];
-					s_y[pointerForOriginalArray[j]] += timeSubSteps*v_y[pointerForOriginalArray[j]];
+				for(j = 0; j < particlesToReceive; j++) {
+					s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
+					s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
 					printf("Next positions, x: %d, y: %d\n",s_x[i],s_y[i]);
 				}
 			}
