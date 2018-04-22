@@ -221,11 +221,7 @@ int main(int argc, char* argv[]){
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
 			for(int dest = 0; dest < p; dest++) {
-
 				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-				weights = (int *) malloc(particlesToReceive * sizeof(int));
-				forces_x = (double *) malloc(particlesToReceive * sizeof(double));
-				forces_y = (double *) malloc(particlesToReceive * sizeof(double));
 
 				if (dest == 0) {
 					weights = masterWeights;
