@@ -386,6 +386,8 @@ int main(int argc, char* argv[]){
 				tempArray_f_y[i] = 0;
 				printf("The value in tempArray_s_x is: %d\n", tempArray_s_x[i]);
 				printf("The value in tempArray_s_y is: %d\n", tempArray_s_y[i]);
+				printf("The value in tempArray_f_x is: %d\n", tempArray_f_x[i]);
+				printf("The value in tempArray_f_y is: %d\n", tempArray_f_y[i]);
 			}
 			// RING LOOP GOES HERE
 			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
@@ -421,8 +423,9 @@ int main(int argc, char* argv[]){
 				printArray(localWeights, particlesToReceive);
 				printf("POINTER");
 				printArray(pointerForLocalArray, particlesToReceive);
-				printf("FORCE");
+				printf("FORCE \n");
 				printArrayD(tempArray_f_x, particlesToReceive);
+				printArrayD(tempArray_f_y, particlesToReceive);
 
 				MPI_Sendrecv(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
