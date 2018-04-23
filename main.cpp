@@ -226,6 +226,8 @@ int main(int argc, char* argv[]){
 				} else {
 					nextRank = my_rank + 1;
 				}
+				printf("*******p: %d\n", p);
+				printf("*******nextRank: %d\n", nextRank);
 
 				int prevRank = 0;
 				if(my_rank == 0){
@@ -375,6 +377,8 @@ int main(int argc, char* argv[]){
 					nextRank = my_rank + 1;
 				}
 
+				printf("*******p: %d\n", p);
+				printf("*******nextRank: %d\n", nextRank);
 				int prevRank = 0;
 				if(my_rank == 1){
 					prevRank = p-1;
