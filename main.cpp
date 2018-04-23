@@ -207,9 +207,9 @@ int main(int argc, char* argv[]){
 				if (dest == 0) {
 					masterWeights = particleWeights;
 	 				masterArray_s_x = particlesToCompute_s_x;
-					masterArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive);
+					masterArray_f_x = (double *) calloc(particlesToReceive, sizeof(double));
 					masterArray_s_y = particlesToCompute_s_y;
-					masterArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
+					masterArray_f_y = (double *) calloc(particlesToReceive, sizeof(double));
 					masterPointerForLocalArray = pointerForOriginalArray;
 					for(i = 0; i < particlesToReceive; i++){
 						tempArray_s_x[i] = masterArray_s_x[i];
