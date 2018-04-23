@@ -176,12 +176,12 @@ int main(int argc, char* argv[]){
 			localArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 			pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
-			int * tempWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
-			int * tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-			double * tempArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
-			int * tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-			double * tempArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
-			pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
+			int * tempWeights = (int *) calloc(particlesToReceive, sizeof(int));
+			int * tempArray_s_x = (int *) calloc(particlesToReceive, sizeof(int)); 
+			double * tempArray_f_x = (double *) calloc(particlesToReceive, sizeof(double)); 
+			int * tempArray_s_y = (int *) calloc(particlesToReceive, sizeof(int)); 
+			double *tempArray_f_y = (double *) calloc(particlesToReceive, sizeof(double));
+			pointerForTempArray = (int *) calloc(particlesToReceive, sizeof(int)); 
 
 			// ************** ALLOCATED FOR SLAVES *************** //
 			for (int dest = 0; dest < p; dest++){
@@ -365,12 +365,12 @@ int main(int argc, char* argv[]){
 		localArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 		pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
-		tempWeights = (int *) malloc(sizeof(int) * particlesToReceive);
-		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
-		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
-		pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
+		tempWeights = (int *) calloc(particlesToReceive, sizeof(int));
+		tempArray_s_x = (int *) calloc(particlesToReceive, sizeof(int)); 
+		tempArray_f_x = (double *) calloc(particlesToReceive, sizeof(double)); 
+		tempArray_s_y = (int *) calloc(particlesToReceive, sizeof(int)); 
+		tempArray_f_y = (double *) calloc(particlesToReceive, sizeof(double));
+		pointerForTempArray = (int *) calloc(particlesToReceive, sizeof(int)); 
 
  	/******* Recieve particles from MASTER *******/
 		for (int numFrames = 0; numFrames < numSteps * numSubSteps; numFrames++){
