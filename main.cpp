@@ -162,12 +162,12 @@ int main(int argc, char* argv[]){
  		}
 		for (int frameNum = 0; frameNum < numSteps * numSubSteps; frameNum++) {	
 			// ************** ALLOCATED FOR MASTER *************** //
-			int * masterWeights;
+			int * masterWeights = (int *) malloc(sizeof(int) * particlesToReceive);;
 			int * masterArray_s_x;
 			double * masterArray_f_x;
 			int * masterArray_s_y;
 			double * masterArray_f_y;
-			int * masterPointerForLocalArray;
+			int * masterPointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive);
 			particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 			localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 			localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -282,7 +282,9 @@ int main(int argc, char* argv[]){
 
 				if (dest == 0) {
 					weights = masterWeights;
+					masterArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive);
 					forces_x = masterArray_f_x;
+					masterArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
 					forces_y = masterArray_f_y;
 					pointerForOriginalArray = masterPointerForLocalArray;
 				}
