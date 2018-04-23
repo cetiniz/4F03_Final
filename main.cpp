@@ -360,16 +360,16 @@ int main(int argc, char* argv[]){
  		printf("My thread number is %d and my SlaveParticlesToReceive is %d\n", my_rank,particlesToReceive);
 		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 		localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-		localArray_f_x = (double *) malloc(particlesToReceive, sizeof(double)); 
+		localArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
 		localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-		localArray_f_y = (double *) malloc(particlesToReceive, sizeof(double)); 
+		localArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 		pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
 		tempWeights = (int *) malloc(sizeof(int) * particlesToReceive);
 		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_x = (double *) calloc(sizeof(double) * particlesToReceive); 
+		tempArray_f_x = (double *) calloc(particlesToReceive, sizeof(double)); 
 		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_y = (double *) calloc(sizeof(double) * particlesToReceive);
+		tempArray_f_y = (double *) calloc(particlesToReceive, sizeof(double));
 		pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
  	/******* Recieve particles from MASTER *******/
