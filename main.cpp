@@ -93,6 +93,8 @@ int main(int argc, char* argv[]){
  	int * particleWeights;
  	double * particlesToCompute_v_x;
  	double * particlesToCompute_v_y;
+ 	double * particlesToCompute_f_x;
+ 	double * particlesToCompute_f_y;
 
 	int particlesRemaining = numParticlesTotal%p;	
 
@@ -193,7 +195,7 @@ int main(int argc, char* argv[]){
 				for(i = offset; i < numParticlesTotal; i+=p){
 					particlesToCompute_s_x[m] = s_x[i];
 					particlesToCompute_s_y[m] = s_y[i];
-					particlesToCompute_f_x[m] = 0;
+					particlesToCompute_f_y[m] = 0;
 					particlesToCompute_f_y[m] = 0;
 					particleWeights[m] = w[i];
 					pointerForOriginalArray[m] = i;
@@ -209,6 +211,8 @@ int main(int argc, char* argv[]){
 					masterPointerForLocalArray = pointerForOriginalArray;
 					for(i = 0; i < particlesToReceive; i++){
 						tempArray_s_x[i] = masterArray_s_x[i];
+						tempArray_f_x[i] = 0;
+						tempArray_f_y[i] = 0;
 						tempArray_s_y[i] = masterArray_s_y[i];
 					}
 				}
