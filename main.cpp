@@ -367,9 +367,9 @@ int main(int argc, char* argv[]){
 
 		tempWeights = (int *) malloc(sizeof(int) * particlesToReceive);
 		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+		tempArray_f_x = (double *) calloc(sizeof(double) * particlesToReceive); 
 		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
+		tempArray_f_y = (double *) calloc(sizeof(double) * particlesToReceive);
 		pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
  	/******* Recieve particles from MASTER *******/
@@ -379,10 +379,11 @@ int main(int argc, char* argv[]){
 			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			tempArray_f_x = &tempArray_f_x[0];
 			printf("SLAVE RECIEVES WEIGHTS\n");
 			printArray(localWeights, particlesToReceive);
 			printArrayD(tempArray_f_x, particlesToReceive);
-			tempArray_f_x = &tempArray_f_x[0];
+			
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
