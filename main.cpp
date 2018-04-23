@@ -395,6 +395,9 @@ int main(int argc, char* argv[]){
 				// 	MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
 				// 	MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
 				// }
+				printf("WEIghT");
+				printArray(localWeights, particlesToReceive);
+				printf("POINTER");
 				printArray(pointerForLocalArray, particlesToReceive);
 
 				MPI_Sendrecv(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
