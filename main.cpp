@@ -146,8 +146,8 @@ int main(int argc, char* argv[]){
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
  				printf("Particle H initial positions: x: %d / y: %d\n", s_x[i],s_y[i]);
- 				v_x[i] = drand48() * (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
- 				v_y[i] = drand48() * (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
+ 				v_x[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
+ 				v_y[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
  				printf("Particle H initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				numParticlesHeavy--;
  			}
