@@ -46,6 +46,14 @@ void printArray(int * arr, int length){
 	printf("\n");
 }
 
+void printArrayD(double * arr, int length){
+	printf("PRINTING OUT ARRAY\n");
+	for (int i = 0; i < length; i++) {
+		printf("%d ",arr[i]);
+	}
+	printf("\n");
+}
+
 int main(int argc, char* argv[]){
 	
 	if( argc != 10){
@@ -399,6 +407,8 @@ int main(int argc, char* argv[]){
 				printArray(localWeights, particlesToReceive);
 				printf("POINTER");
 				printArray(pointerForLocalArray, particlesToReceive);
+				printf("FORCE");
+				printArrayD(tempArray_f_x, particlesToReceive);
 
 				MPI_Sendrecv(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
