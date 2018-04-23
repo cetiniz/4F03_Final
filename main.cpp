@@ -194,10 +194,10 @@ int main(int argc, char* argv[]){
 					}
 				}
 				else {
-					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 5, MPI_COMM_WORLD);
-					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 5, MPI_COMM_WORLD);
-					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 5, MPI_COMM_WORLD);
-					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 5, MPI_COMM_WORLD);
+					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 				}
 			}
 			// /************** RING LOOP WILL GO HERE***************/
@@ -252,10 +252,10 @@ int main(int argc, char* argv[]){
 					pointerForOriginalArray = masterPointerForLocalArray;
 				}
 				else {
-					MPI_Recv(&(weights[0]), particlesToReceive, MPI_INT, dest, 6, MPI_COMM_WORLD, &status);
-					MPI_Recv(&(forces_x[0]), particlesToReceive, MPI_DOUBLE, dest, 6, MPI_COMM_WORLD, &status);
-					MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_DOUBLE, dest, 6, MPI_COMM_WORLD, &status);
-					MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 6, MPI_COMM_WORLD, &status);
+					MPI_Recv(&(weights[0]), particlesToReceive, MPI_INT, dest, 8, MPI_COMM_WORLD, &status);
+					MPI_Recv(&(forces_x[0]), particlesToReceive, MPI_DOUBLE, dest, 8, MPI_COMM_WORLD, &status);
+					MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_DOUBLE, dest, 8, MPI_COMM_WORLD, &status);
+					MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 8, MPI_COMM_WORLD, &status);
 				}
 				
 				for(j = 0; j < particlesToReceive; j++) {
@@ -334,10 +334,10 @@ int main(int argc, char* argv[]){
  	/******* Recieve particles from MASTER *******/
 		for (int numFrames = 0; numFrames < numSteps * numSubSteps; numFrames++){
 			printf("My thread number is %d and my loop (slaveFrame) is %d\n", my_rank,numFrames);
-			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 5, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 5, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 5, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 5, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			printf("SLAVE RECIEVES WEIGHTS\n");
 			printArray(localWeights, particlesToReceive);
 			for(i = 0; i < particlesToReceive; i++){
@@ -384,10 +384,10 @@ int main(int argc, char* argv[]){
 				}
 			}
 		// FINAL SEND GOES HERE
-		MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 6, MPI_COMM_WORLD);
-		MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_DOUBLE, 0, 6, MPI_COMM_WORLD);
-		MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_DOUBLE, 0, 6, MPI_COMM_WORLD);
-		MPI_Send(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 6, MPI_COMM_WORLD);
+		MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 8, MPI_COMM_WORLD);
+		MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_DOUBLE, 0, 8, MPI_COMM_WORLD);
+		MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_DOUBLE, 0, 8, MPI_COMM_WORLD);
+		MPI_Send(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 8, MPI_COMM_WORLD);
 		}
 	}
 	MPI_Finalize();
