@@ -191,6 +191,8 @@ int main(int argc, char* argv[]){
 				for(i = offset; i < numParticlesTotal; i+=p){
 					particlesToCompute_s_x[m] = s_x[i];
 					particlesToCompute_s_y[m] = s_y[i];
+					particlesToCompute_f_x[m] = 0;
+					particlesToCompute_f_y[m] = 0;
 					particleWeights[m] = w[i];
 					pointerForOriginalArray[m] = i;
 					m++;
@@ -212,6 +214,8 @@ int main(int argc, char* argv[]){
 					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(particlesToCompute_f_x[0]), particlesToReceive, MPI_DOUBLE, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(particlesToCompute_f_y[0]), particlesToReceive, MPI_DOUBLE, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 				}
 			}
@@ -357,7 +361,10 @@ int main(int argc, char* argv[]){
 			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localArray_f_x[0]), particlesToReceive, MPI_DOUBLE, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localArray_f_y[0]), particlesToReceive, MPI_DOUBLE, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+
 			printf("SLAVE RECIEVES WEIGHTS\n");
 			printArray(localWeights, particlesToReceive);
 			for(i = 0; i < particlesToReceive; i++){
