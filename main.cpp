@@ -45,7 +45,7 @@ void printArray(int * arr, int length){
 	}
 	printf("\n");
 }
-void printArray(double * arr, int length){
+void printArrayD(double * arr, int length){
 	printf("PRINTING OUT ARRAY\n");
 	for (int i = 0; i < length; i++) {
 		printf("%d ",arr[i]);
