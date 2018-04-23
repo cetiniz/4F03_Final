@@ -246,11 +246,11 @@ int main(int argc, char* argv[]){
 					prevRank = my_rank - 1;
 				} */
 
-				printf("WEIghT");
+				printf("WEIghT******");
 				printArray(localWeights, particlesToReceive);
-				printf("POINTER");
+				printf("POINTER******");
 				printArray(pointerForLocalArray, particlesToReceive);
-				printf("FORCE");
+				printf("FORCE******");
 				printArrayD(tempArray_f_x, particlesToReceive);
 
 				//Send to dest AND receive from source
