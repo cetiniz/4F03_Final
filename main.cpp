@@ -116,7 +116,7 @@ int main(int argc, char* argv[]){
  	int * tempArray_s_y;
  	double * tempArray_f_x;
  	double * tempArray_f_y;
- 	int * tempParticlesToReceive;
+ 	int tempParticlesToReceive;
 
  	int * weights;
  	double * forces_x;
