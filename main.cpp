@@ -328,14 +328,14 @@ int main(int argc, char* argv[]){
 						image[index+1] = 214;
 						image[index+2] = 44;
 					} else if(w[i] >= massMediumMin && w[i] <= massMediumMax){
-						image[index] = 206;
-						image[index+1] = 0;
-						image[index+2] = 86;
+						image[index] = 135;
+						image[index+1] = 206;
+						image[index+2] = 250;
 
 					} else{
-						image[index] = 116;
-						image[index+1] = 209;
-						image[index+2] = 234;
+						image[index] = 255;
+						image[index+1] = 20;
+						image[index+2] = 147;
 					}
 				}
 			}
