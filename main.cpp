@@ -367,9 +367,9 @@ int main(int argc, char* argv[]){
 
 		tempWeights = (int *) malloc(sizeof(int) * particlesToReceive);
 		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_x = (double *) calloc(sizeof(double) * particlesToReceive); 
+		tempArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
 		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-		tempArray_f_y = (double *) calloc(sizeof(double) * particlesToReceive);
+		tempArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
 		pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
  	/******* Recieve particles from MASTER *******/
