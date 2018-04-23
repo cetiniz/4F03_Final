@@ -1343,7 +1343,7 @@ Next positions, x: 206, y: 280
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 156, y: 211
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 201
+Next positions, x: 175, y: 201
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 234, y: 239
 PRINTING OUT ARRAY
@@ -1402,9 +1402,9 @@ INDEX: 84618
 S_X: 156 
 S_Y: 211 
 INDEX: 63768 
-S_X: -2147483648 
+S_X: 175 
 S_Y: 201 
-INDEX: -2147423348 
+INDEX: 60825 
 S_X: 234 
 S_Y: 239 
 INDEX: 72402 
@@ -1447,7 +1447,7 @@ Next positions, x: 221, y: 295
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 167, y: 222
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 212
+Next positions, x: 187, y: 212
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 246, y: 254
 PRINTING OUT ARRAY
@@ -1506,9 +1506,9 @@ INDEX: 89163
 S_X: 167 
 S_Y: 222 
 INDEX: 67101 
-S_X: -2147483648 
+S_X: 187 
 S_Y: 212 
-INDEX: -2147420048 
+INDEX: 64161 
 S_X: 246 
 S_Y: 254 
 INDEX: 76938 
@@ -1551,7 +1551,7 @@ Next positions, x: 236, y: 310
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 178, y: 233
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 223
+Next positions, x: 199, y: 223
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 258, y: 269
 PRINTING OUT ARRAY
@@ -1610,9 +1610,9 @@ INDEX: 93708
 S_X: 178 
 S_Y: 233 
 INDEX: 70434 
-S_X: -2147483648 
+S_X: 199 
 S_Y: 223 
-INDEX: -2147416748 
+INDEX: 67497 
 S_X: 258 
 S_Y: 269 
 INDEX: 81474 
@@ -1655,7 +1655,7 @@ Next positions, x: 251, y: 325
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 189, y: 244
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 234
+Next positions, x: 211, y: 234
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 270, y: 284
 PRINTING OUT ARRAY
@@ -1714,9 +1714,9 @@ INDEX: 98253
 S_X: 189 
 S_Y: 244 
 INDEX: 73767 
-S_X: -2147483648 
+S_X: 211 
 S_Y: 234 
-INDEX: -2147413448 
+INDEX: 70833 
 S_X: 270 
 S_Y: 284 
 INDEX: 86010 
@@ -1759,7 +1759,7 @@ Next positions, x: 266, y: 340
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 200, y: 255
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 245
+Next positions, x: 223, y: 245
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 282, y: 299
 PRINTING OUT ARRAY
@@ -1818,9 +1818,9 @@ INDEX: 102798
 S_X: 200 
 S_Y: 255 
 INDEX: 77100 
-S_X: -2147483648 
+S_X: 223 
 S_Y: 245 
-INDEX: -2147410148 
+INDEX: 74169 
 S_X: 282 
 S_Y: 299 
 INDEX: 90546 
@@ -1863,7 +1863,7 @@ Next positions, x: 281, y: 355
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 211, y: 266
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 256
+Next positions, x: 235, y: 256
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 294, y: 314
 PRINTING OUT ARRAY
@@ -1922,9 +1922,9 @@ INDEX: 107343
 S_X: 211 
 S_Y: 266 
 INDEX: 80433 
-S_X: -2147483648 
+S_X: 235 
 S_Y: 256 
-INDEX: -2147406848 
+INDEX: 77505 
 S_X: 294 
 S_Y: 314 
 INDEX: 95082 
@@ -1967,7 +1967,7 @@ Next positions, x: 296, y: 370
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 222, y: 277
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 267
+Next positions, x: 247, y: 267
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 306, y: 329
 PRINTING OUT ARRAY
@@ -2026,9 +2026,9 @@ INDEX: 111888
 S_X: 222 
 S_Y: 277 
 INDEX: 83766 
-S_X: -2147483648 
+S_X: 247 
 S_Y: 267 
-INDEX: -2147403548 
+INDEX: 80841 
 S_X: 306 
 S_Y: 329 
 INDEX: 99618 
@@ -2071,7 +2071,7 @@ Next positions, x: 311, y: 385
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 233, y: 288
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 278
+Next positions, x: 259, y: 278
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 318, y: 344
 PRINTING OUT ARRAY
@@ -2130,9 +2130,9 @@ INDEX: 116433
 S_X: 233 
 S_Y: 288 
 INDEX: 87099 
-S_X: -2147483648 
+S_X: 259 
 S_Y: 278 
-INDEX: -2147400248 
+INDEX: 84177 
 S_X: 318 
 S_Y: 344 
 INDEX: 104154 
@@ -2175,7 +2175,7 @@ Next positions, x: 326, y: 400
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 244, y: 299
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 289
+Next positions, x: 271, y: 289
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 330, y: 359
 PRINTING OUT ARRAY
@@ -2234,9 +2234,9 @@ INDEX: 120978
 S_X: 244 
 S_Y: 299 
 INDEX: 90432 
-S_X: -2147483648 
+S_X: 271 
 S_Y: 289 
-INDEX: -2147396948 
+INDEX: 87513 
 S_X: 330 
 S_Y: 359 
 INDEX: 108690 
@@ -2279,7 +2279,7 @@ Next positions, x: 341, y: 415
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 255, y: 310
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 300
+Next positions, x: 283, y: 300
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 342, y: 374
 PRINTING OUT ARRAY
@@ -2338,9 +2338,9 @@ INDEX: 125523
 S_X: 255 
 S_Y: 310 
 INDEX: 93765 
-S_X: -2147483648 
+S_X: 283 
 S_Y: 300 
-INDEX: -2147393648 
+INDEX: 90849 
 S_X: 342 
 S_Y: 374 
 INDEX: 113226 
@@ -2383,7 +2383,7 @@ Next positions, x: 356, y: 430
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 266, y: 321
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 311
+Next positions, x: 295, y: 311
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 354, y: 389
 PRINTING OUT ARRAY
@@ -2442,9 +2442,9 @@ INDEX: 130068
 S_X: 266 
 S_Y: 321 
 INDEX: 97098 
-S_X: -2147483648 
+S_X: 295 
 S_Y: 311 
-INDEX: -2147390348 
+INDEX: 94185 
 S_X: 354 
 S_Y: 389 
 INDEX: 117762 
@@ -2487,7 +2487,7 @@ Next positions, x: 371, y: 445
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 277, y: 332
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 322
+Next positions, x: 307, y: 322
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 366, y: 404
 PRINTING OUT ARRAY
@@ -2546,9 +2546,9 @@ INDEX: 134613
 S_X: 277 
 S_Y: 332 
 INDEX: 100431 
-S_X: -2147483648 
+S_X: 307 
 S_Y: 322 
-INDEX: -2147387048 
+INDEX: 97521 
 S_X: 366 
 S_Y: 404 
 INDEX: 122298 
@@ -2591,7 +2591,7 @@ Next positions, x: 386, y: 460
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 288, y: 343
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 333
+Next positions, x: 319, y: 333
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 378, y: 419
 PRINTING OUT ARRAY
@@ -2650,9 +2650,9 @@ INDEX: 139158
 S_X: 288 
 S_Y: 343 
 INDEX: 103764 
-S_X: -2147483648 
+S_X: 319 
 S_Y: 333 
-INDEX: -2147383748 
+INDEX: 100857 
 S_X: 378 
 S_Y: 419 
 INDEX: 126834 
@@ -2695,7 +2695,7 @@ Next positions, x: 401, y: 475
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 299, y: 354
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 344
+Next positions, x: 331, y: 344
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 390, y: 434
 PRINTING OUT ARRAY
@@ -2754,9 +2754,9 @@ INDEX: 143703
 S_X: 299 
 S_Y: 354 
 INDEX: 107097 
-S_X: -2147483648 
+S_X: 331 
 S_Y: 344 
-INDEX: -2147380448 
+INDEX: 104193 
 S_X: 390 
 S_Y: 434 
 INDEX: 131370 
@@ -2799,7 +2799,7 @@ Next positions, x: 416, y: 490
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 310, y: 365
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 355
+Next positions, x: 343, y: 355
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 402, y: 449
 PRINTING OUT ARRAY
@@ -2858,9 +2858,9 @@ INDEX: 148248
 S_X: 310 
 S_Y: 365 
 INDEX: 110430 
-S_X: -2147483648 
+S_X: 343 
 S_Y: 355 
-INDEX: -2147377148 
+INDEX: 107529 
 S_X: 402 
 S_Y: 449 
 INDEX: 135906 
@@ -2903,7 +2903,7 @@ Next positions, x: 431, y: 505
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 321, y: 376
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 366
+Next positions, x: 355, y: 366
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 414, y: 464
 PRINTING OUT ARRAY
@@ -2962,9 +2962,9 @@ INDEX: 152793
 S_X: 321 
 S_Y: 376 
 INDEX: 113763 
-S_X: -2147483648 
+S_X: 355 
 S_Y: 366 
-INDEX: -2147373848 
+INDEX: 110865 
 S_X: 414 
 S_Y: 464 
 INDEX: 140442 
@@ -3007,7 +3007,7 @@ Next positions, x: 446, y: 520
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 332, y: 387
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 377
+Next positions, x: 367, y: 377
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 426, y: 479
 PRINTING OUT ARRAY
@@ -3066,9 +3066,9 @@ INDEX: 157338
 S_X: 332 
 S_Y: 387 
 INDEX: 117096 
-S_X: -2147483648 
+S_X: 367 
 S_Y: 377 
-INDEX: -2147370548 
+INDEX: 114201 
 S_X: 426 
 S_Y: 479 
 INDEX: 144978 
@@ -3111,7 +3111,7 @@ Next positions, x: 461, y: 535
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 343, y: 398
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 388
+Next positions, x: 379, y: 388
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 438, y: 494
 PRINTING OUT ARRAY
@@ -3170,9 +3170,9 @@ INDEX: 161883
 S_X: 343 
 S_Y: 398 
 INDEX: 120429 
-S_X: -2147483648 
+S_X: 379 
 S_Y: 388 
-INDEX: -2147367248 
+INDEX: 117537 
 S_X: 438 
 S_Y: 494 
 INDEX: 149514 
@@ -3215,7 +3215,7 @@ Next positions, x: 476, y: 550
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 354, y: 409
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 399
+Next positions, x: 391, y: 399
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 450, y: 509
 PRINTING OUT ARRAY
@@ -3274,9 +3274,9 @@ INDEX: 166428
 S_X: 354 
 S_Y: 409 
 INDEX: 123762 
-S_X: -2147483648 
+S_X: 391 
 S_Y: 399 
-INDEX: -2147363948 
+INDEX: 120873 
 S_X: 450 
 S_Y: 509 
 INDEX: 154050 
@@ -3319,7 +3319,7 @@ Next positions, x: 491, y: 565
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 365, y: 420
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 410
+Next positions, x: 403, y: 410
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 462, y: 524
 PRINTING OUT ARRAY
@@ -3378,9 +3378,9 @@ INDEX: 170973
 S_X: 365 
 S_Y: 420 
 INDEX: 127095 
-S_X: -2147483648 
+S_X: 403 
 S_Y: 410 
-INDEX: -2147360648 
+INDEX: 124209 
 S_X: 462 
 S_Y: 524 
 INDEX: 158586 
@@ -3423,7 +3423,7 @@ Next positions, x: 506, y: 580
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 376, y: 431
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 421
+Next positions, x: 415, y: 421
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 474, y: 539
 PRINTING OUT ARRAY
@@ -3482,9 +3482,9 @@ INDEX: 175518
 S_X: 376 
 S_Y: 431 
 INDEX: 130428 
-S_X: -2147483648 
+S_X: 415 
 S_Y: 421 
-INDEX: -2147357348 
+INDEX: 127545 
 S_X: 474 
 S_Y: 539 
 INDEX: 163122 
@@ -3527,7 +3527,7 @@ Next positions, x: 521, y: 595
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 387, y: 442
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 432
+Next positions, x: 427, y: 432
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 486, y: 554
 PRINTING OUT ARRAY
@@ -3586,9 +3586,9 @@ INDEX: 180063
 S_X: 387 
 S_Y: 442 
 INDEX: 133761 
-S_X: -2147483648 
+S_X: 427 
 S_Y: 432 
-INDEX: -2147354048 
+INDEX: 130881 
 S_X: 486 
 S_Y: 554 
 INDEX: 167658 
@@ -3631,7 +3631,7 @@ Next positions, x: 536, y: 610
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 398, y: 453
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 443
+Next positions, x: 439, y: 443
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 498, y: 569
 PRINTING OUT ARRAY
@@ -3690,9 +3690,9 @@ INDEX: 184608
 S_X: 398 
 S_Y: 453 
 INDEX: 137094 
-S_X: -2147483648 
+S_X: 439 
 S_Y: 443 
-INDEX: -2147350748 
+INDEX: 134217 
 S_X: 498 
 S_Y: 569 
 INDEX: 172194 
@@ -3735,7 +3735,7 @@ Next positions, x: 551, y: 625
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 409, y: 464
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 454
+Next positions, x: 451, y: 454
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 510, y: 584
 PRINTING OUT ARRAY
@@ -3794,9 +3794,9 @@ INDEX: 189153
 S_X: 409 
 S_Y: 464 
 INDEX: 140427 
-S_X: -2147483648 
+S_X: 451 
 S_Y: 454 
-INDEX: -2147347448 
+INDEX: 137553 
 S_X: 510 
 S_Y: 584 
 INDEX: 176730 
@@ -3839,7 +3839,7 @@ Next positions, x: 566, y: 640
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 420, y: 475
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 465
+Next positions, x: 463, y: 465
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 522, y: 599
 PRINTING OUT ARRAY
@@ -3898,9 +3898,9 @@ INDEX: 193698
 S_X: 420 
 S_Y: 475 
 INDEX: 143760 
-S_X: -2147483648 
+S_X: 463 
 S_Y: 465 
-INDEX: -2147344148 
+INDEX: 140889 
 S_X: 522 
 S_Y: 599 
 INDEX: 181266 
@@ -3943,7 +3943,7 @@ Next positions, x: 581, y: 655
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 431, y: 486
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 476
+Next positions, x: 475, y: 476
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 534, y: 614
 PRINTING OUT ARRAY
@@ -4002,9 +4002,9 @@ INDEX: 198243
 S_X: 431 
 S_Y: 486 
 INDEX: 147093 
-S_X: -2147483648 
+S_X: 475 
 S_Y: 476 
-INDEX: -2147340848 
+INDEX: 144225 
 S_X: 534 
 S_Y: 614 
 INDEX: 185802 
@@ -4047,7 +4047,7 @@ Next positions, x: 596, y: 670
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 442, y: 497
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 487
+Next positions, x: 487, y: 487
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 546, y: 629
 PRINTING OUT ARRAY
@@ -4106,9 +4106,9 @@ INDEX: 202788
 S_X: 442 
 S_Y: 497 
 INDEX: 150426 
-S_X: -2147483648 
+S_X: 487 
 S_Y: 487 
-INDEX: -2147337548 
+INDEX: 147561 
 S_X: 546 
 S_Y: 629 
 INDEX: 190338 
@@ -4151,7 +4151,7 @@ Next positions, x: 611, y: 685
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 453, y: 508
 !!!!!!!I AM FROM DEST 0
-Next positions, x: -2147483648, y: 498
+Next positions, x: 499, y: 498
 !!!!!!!I AM FROM DEST 0
 Next positions, x: 558, y: 644
 PRINTING OUT ARRAY
@@ -4210,9 +4210,9 @@ INDEX: 207333
 S_X: 453 
 S_Y: 508 
 INDEX: 153759 
-S_X: -2147483648 
+S_X: 499 
 S_Y: 498 
-INDEX: -2147334248 
+INDEX: 150897 
 S_X: 558 
 S_Y: 644 
 INDEX: 194874 
