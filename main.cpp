@@ -182,6 +182,8 @@ int main(int argc, char* argv[]){
  				/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
 				particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 	 			particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
+	 			particlesToCompute_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+	 			particlesToCompute_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 	 			particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 				pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive);				
  				/******* STEP 3: DISTRIBUTE PARTICLES FROM ORIGINAL ARRAYS TO NEW ARRAYS & MARK LOCATION IN ORIGINAL ARRAYS *******/
