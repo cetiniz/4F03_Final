@@ -245,7 +245,10 @@ int main(int argc, char* argv[]){
 				} else {
 					prevRank = my_rank - 1;
 				} */
-
+				printf("X POSITIONS!");
+				printArray(tempArray_s_x,particlesToReceive);
+				printf("X FORCES!");
+				printArray(tempArray_f_x,particlesToReceive);
 
 				//Send to dest AND receive from source
 				//MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
@@ -386,20 +389,10 @@ int main(int argc, char* argv[]){
 				printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
 				int nextRank = (my_rank-1+p)%p;
-				//if(my_rank == p-1){
-					//nextRank = 1;
-				//} else {
-					//nextRank = my_rank + 1;
-				//}
 
 				printf("*******p: %d\n", p);
 				printf("*******nextRank: %d\n", nextRank);
 				int prevRank = (my_rank+1)%p;
-				//if(my_rank == 1){
-					//prevRank = p-1;
-				//} else {
-					//prevRank = my_rank - 1;
-				//}
 
 				//CHANGE BASED ON EVEN OR ODD
 				//IF EVEN
