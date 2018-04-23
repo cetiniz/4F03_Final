@@ -376,6 +376,8 @@ int main(int argc, char* argv[]){
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
+				tempArray_f_x[i] = 0;
+				tempArray_f_y[i] = 0;
 				printf("The value in tempArray_s_x is: %d\n", tempArray_s_x[i]);
 				printf("The value in tempArray_s_y is: %d\n", tempArray_s_y[i]);
 			}
