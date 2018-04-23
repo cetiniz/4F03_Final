@@ -245,6 +245,12 @@ int main(int argc, char* argv[]){
 				} else {
 					prevRank = my_rank - 1;
 				} */
+				printf("WEIghT");
+				printArray(localWeights, particlesToReceive);
+				printf("POINTER");
+				printArray(pointerForLocalArray, particlesToReceive);
+				printf("FORCE");
+				printArrayD(tempArray_f_x, particlesToReceive);
 
 				//Send to dest AND receive from source
 				//MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
