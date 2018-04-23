@@ -254,14 +254,15 @@ int main(int argc, char* argv[]){
 				}
 			}
 
-			unsigned char* image = (unsigned char *) malloc(sizeof(unsigned char) *3*imageWidth*imageHeight);
+			unsigned char* image = (unsigned char *) calloc(3*imageWidth*imageHeight, sizeof(unsigned char));
 			// distribute particle colours at given position to array to create image
 			printArray(w,numParticlesTotal);
 			for(i = 0; i < numParticlesTotal; i++){
-
 				int index = (s_y[i] * imageWidth + s_x[i])*3;
-				printf("INDEX: %d ", index);
-
+				printf("S_X: %d ", s_x[i]);
+				printf("\n");
+				printf("S_Y: %d ", s_y[i]);
+				printf("\n");
 				printf("INDEX: %d ", index);
 				printf("\n");
 				if (index < (sizeof(unsigned char) *3*imageWidth*imageHeight) && index >= 0){
@@ -269,18 +270,15 @@ int main(int argc, char* argv[]){
 						image[index] = 68;
 						image[index+1] = 214;
 						image[index+2] = 44;
-						printf("HELLLLLLLLO3333333");
 					} else if(w[i] >= massMediumMin && w[i] <= massMediumMax){
 						image[index] = 206;
 						image[index+1] = 0;
 						image[index+2] = 86;
-						printf("HELLLLLLLLO2222222");
 
 					} else{
 						image[index] = 116;
 						image[index+1] = 209;
 						image[index+2] = 234;
-						printf("HELLLLLLLLO");
 					}
 				}
 			}
