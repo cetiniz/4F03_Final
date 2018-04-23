@@ -379,6 +379,7 @@ int main(int argc, char* argv[]){
 			printf("SLAVE RECIEVES WEIGHTS\n");
 			printArray(localWeights, particlesToReceive);
 			printArrayD(tempArray_f_x, particlesToReceive);
+			tempArray_f_x = &tempArray_f_x[0];
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
@@ -389,6 +390,7 @@ int main(int argc, char* argv[]){
 				printf("The value in tempArray_f_x is: %d\n", tempArray_f_x[i]);
 				printf("The value in tempArray_f_y is: %d\n", tempArray_f_y[i]);
 			}
+			printf("The FIRST value in tempArray_f_y is: %d\n", tempArray_f_y[0]);
 			// RING LOOP GOES HERE
 			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
 				printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
