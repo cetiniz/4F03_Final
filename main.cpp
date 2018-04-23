@@ -128,7 +128,7 @@ int main(int argc, char* argv[]){
  				printf("Particle L initial positions: x: %d / y: %d\n", s_x[i],s_y[i]);
  				v_x[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  				v_y[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
- 				printf("Particle L initial velocities: x: %d / y: %d\n", v_x[i],v_y[i]);
+ 				printf("Particle L initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				numParticlesLight--;
  			} else if(numParticlesMedium > 0){
  				w[i] = drand48() * (massMediumMax-massMediumMin+1) + massMediumMin;
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]){
  				printf("Particle M initial positions: x: %d / y: %d\n", s_x[i],s_y[i]);
  				v_x[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
  				v_y[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
- 				printf("Particle M initial velocities: x: %d / y: %d\n", v_x[i],v_y[i]);
+ 				printf("Particle M initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				numParticlesMedium--;
  			} else if(numParticlesHeavy > 0){
  				w[i] = drand48() * (massHeavyMax-massHeavyMin+1) + massHeavyMin;
@@ -148,7 +148,7 @@ int main(int argc, char* argv[]){
  				printf("Particle H initial positions: x: %d / y: %d\n", s_x[i],s_y[i]);
  				v_x[i] = drand48() * (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
  				v_y[i] = drand48() * (velocityHeavyMin-velocityHeavyMax+1) + velocityHeavyMin;
- 				printf("Particle H initial velocities: x: %d / y: %d\n", v_x[i],v_y[i]);
+ 				printf("Particle H initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				numParticlesHeavy--;
  			}
  		}
