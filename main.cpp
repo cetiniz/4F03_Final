@@ -45,13 +45,6 @@ void printArray(int * arr, int length){
 	}
 	printf("\n");
 }
-void printArrayD(double * arr, int length){
-	printf("PRINTING OUT ARRAY\n");
-	for (int i = 0; i < length; i++) {
-		printf("%d ",arr[i]);
-	}
-	printf("\n");
-}
 
 int main(int argc, char* argv[]){
 	
@@ -100,8 +93,6 @@ int main(int argc, char* argv[]){
  	int * particleWeights;
  	double * particlesToCompute_v_x;
  	double * particlesToCompute_v_y;
- 	double * particlesToCompute_f_x;
- 	double * particlesToCompute_f_y;
 
 	int particlesRemaining = numParticlesTotal%p;	
 
@@ -191,8 +182,6 @@ int main(int argc, char* argv[]){
  				/******* STEP 2: CREATE ARRAYS TO STORE PARTICLE VALUES & LOCATION IN ORIGINAL ARRAY (Particle number) *******/
 				particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 	 			particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-	 			particlesToCompute_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
-	 			particlesToCompute_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
 	 			particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 				pointerForOriginalArray = (int *) malloc(sizeof(int) * particlesToReceive);				
  				/******* STEP 3: DISTRIBUTE PARTICLES FROM ORIGINAL ARRAYS TO NEW ARRAYS & MARK LOCATION IN ORIGINAL ARRAYS *******/
@@ -202,8 +191,6 @@ int main(int argc, char* argv[]){
 				for(i = offset; i < numParticlesTotal; i+=p){
 					particlesToCompute_s_x[m] = s_x[i];
 					particlesToCompute_s_y[m] = s_y[i];
-					particlesToCompute_f_y[m] = 0;
-					particlesToCompute_f_y[m] = 0;
 					particleWeights[m] = w[i];
 					pointerForOriginalArray[m] = i;
 					m++;
@@ -218,10 +205,6 @@ int main(int argc, char* argv[]){
 					masterPointerForLocalArray = pointerForOriginalArray;
 					for(i = 0; i < particlesToReceive; i++){
 						tempArray_s_x[i] = masterArray_s_x[i];
-						masterArray_f_x = 0;
-						masterArray_f_y = 0;
-						tempArray_f_x[i] = 0;
-						tempArray_f_y[i] = 0;
 						tempArray_s_y[i] = masterArray_s_y[i];
 					}
 				}
@@ -229,8 +212,6 @@ int main(int argc, char* argv[]){
 					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					MPI_Send(&(particlesToCompute_f_x[0]), particlesToReceive, MPI_DOUBLE, dest, 7, MPI_COMM_WORLD);
-					MPI_Send(&(particlesToCompute_f_y[0]), particlesToReceive, MPI_DOUBLE, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 				}
 			}
@@ -254,17 +235,14 @@ int main(int argc, char* argv[]){
 				} else {
 					prevRank = my_rank - 1;
 				} */
-				printf("X POSITIONS!");
-				printArray(tempArray_s_x,particlesToReceive);
-				printf("X FORCES!");
-				printArrayD(tempArray_f_x,particlesToReceive);
+
 
 				//Send to dest AND receive from source
 				//MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
 				//MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
 				MPI_Sendrecv(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				//MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				//MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				//MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				//MPI_Sendrecv(&(pointerForLocalArray[0]),  particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -379,19 +357,12 @@ int main(int argc, char* argv[]){
 			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(localArray_f_x[0]), particlesToReceive, MPI_DOUBLE, 0, 7, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(localArray_f_y[0]), particlesToReceive, MPI_DOUBLE, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-
 			printf("SLAVE RECIEVES WEIGHTS\n");
 			printArray(localWeights, particlesToReceive);
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
-				localArray_f_x[i] = 0;
-				localArray_f_y[i] = 0;
-				tempArray_f_x[i] = 0;
-				tempArray_f_y[i] = 0;
 				printf("The value in tempArray_s_x is: %d\n", tempArray_s_x[i]);
 				printf("The value in tempArray_s_y is: %d\n", tempArray_s_y[i]);
 			}
@@ -400,10 +371,20 @@ int main(int argc, char* argv[]){
 				printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
 				int nextRank = (my_rank-1+p)%p;
+				//if(my_rank == p-1){
+					//nextRank = 1;
+				//} else {
+					//nextRank = my_rank + 1;
+				//}
 
 				printf("*******p: %d\n", p);
 				printf("*******nextRank: %d\n", nextRank);
 				int prevRank = (my_rank+1)%p;
+				//if(my_rank == 1){
+					//prevRank = p-1;
+				//} else {
+					//prevRank = my_rank - 1;
+				//}
 
 				//CHANGE BASED ON EVEN OR ODD
 				//IF EVEN
@@ -418,7 +399,7 @@ int main(int argc, char* argv[]){
 
 				MPI_Sendrecv(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				//MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				//MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				//MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				//MPI_Sendrecv(&(pointerForLocalArray[0]),  particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
