@@ -139,8 +139,8 @@ int main(int argc, char* argv[]){
  					v_y[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  					printf("Particle L initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				} else{
- 					v_x[i] = -1*drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
- 					v_y[i] = -1*drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 					v_x[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
+ 					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  					printf("Particle L initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				}
  				numParticlesLight--;
@@ -155,8 +155,8 @@ int main(int argc, char* argv[]){
  					v_y[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
  					printf("Particle M initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				} else{
- 					v_x[i] = -1*drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
- 					v_y[i] = -1*drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
+ 					v_x[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
+ 					v_y[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  					printf("Particle M initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				}
  				numParticlesMedium--;
@@ -171,8 +171,8 @@ int main(int argc, char* argv[]){
  					v_y[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
  					printf("Particle H initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				} else{
- 					v_x[i] = -1*drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
- 					v_y[i] = -1*drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
+ 					v_x[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
+ 					v_y[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  					printf("Particle H initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
  				}
  				numParticlesHeavy--;
