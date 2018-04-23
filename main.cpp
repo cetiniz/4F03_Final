@@ -246,12 +246,7 @@ int main(int argc, char* argv[]){
 					prevRank = my_rank - 1;
 				} */
 
-				printf("WEIghT******");
-				printArray(localWeights, particlesToReceive);
-				printf("POINTER******");
-				printArray(pointerForLocalArray, particlesToReceive);
-				printf("FORCE******");
-				printArrayD(tempArray_f_x, particlesToReceive);
+				
 
 				//Send to dest AND receive from source
 				//MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
@@ -262,6 +257,14 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				
+				printf("WEIghT******");
+				printArray(localWeights, particlesToReceive);
+				printf("POINTER******");
+				printArray(pointerForLocalArray, particlesToReceive);
+				printf("FORCE******");
+				printArrayD(tempArray_f_x, particlesToReceive);
+
 				j = 0;
 				for(i = 0; i < particlesToReceive; i++){
 				 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive){ //find index where particle number in tempArray is greater than localArray
