@@ -360,9 +360,9 @@ int main(int argc, char* argv[]){
  		printf("My thread number is %d and my SlaveParticlesToReceive is %d\n", my_rank,particlesToReceive);
 		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 		localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
-		localArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
+		localArray_f_x = (double *) malloc(particlesToReceive, sizeof(double)); 
 		localArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
-		localArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive); 
+		localArray_f_y = (double *) malloc(particlesToReceive, sizeof(double)); 
 		pointerForLocalArray = (int *) malloc(sizeof(int) * particlesToReceive); 
 
 		tempWeights = (int *) malloc(sizeof(int) * particlesToReceive);
