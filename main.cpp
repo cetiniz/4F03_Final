@@ -220,21 +220,21 @@ int main(int argc, char* argv[]){
 				printf("My thread number is %d and my loop (ringNumMaster) is %d\n", my_rank, ringNumber);
 
 				//Send to dest AND receive from source
-				int nextRank = 0;
-				if(my_rank == p-1){
+				int nextRank = (my_rank-1+p)%p;;
+				/*if(my_rank == p-1){
 					nextRank = 0;
 				} else {
 					nextRank = my_rank + 1;
-				}
+				} */
 				printf("*******p: %d\n", p);
 				printf("*******nextRank: %d\n", nextRank);
 
-				int prevRank = 0;
-				if(my_rank == 0){
+				int prevRank = (my_rank+1)%p;
+				/* if(my_rank == 0){
 					prevRank = p-1;
 				} else {
 					prevRank = my_rank - 1;
-				}
+				} */
 
 
 				//Send to dest AND receive from source
@@ -370,21 +370,21 @@ int main(int argc, char* argv[]){
 			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
 				printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
-				int nextRank = 0;
-				if(my_rank == p-1){
-					nextRank = 1;
-				} else {
-					nextRank = my_rank + 1;
-				}
+				int nextRank = (my_rank-1+p)%p;
+				//if(my_rank == p-1){
+					//nextRank = 1;
+				//} else {
+					//nextRank = my_rank + 1;
+				//}
 
 				printf("*******p: %d\n", p);
 				printf("*******nextRank: %d\n", nextRank);
-				int prevRank = 0;
-				if(my_rank == 1){
-					prevRank = p-1;
-				} else {
-					prevRank = my_rank - 1;
-				}
+				int prevRank = (my_rank+1)%p;
+				//if(my_rank == 1){
+					//prevRank = p-1;
+				//} else {
+					//prevRank = my_rank - 1;
+				//}
 
 				//CHANGE BASED ON EVEN OR ODD
 				//IF EVEN
