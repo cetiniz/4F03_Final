@@ -218,6 +218,8 @@ int main(int argc, char* argv[]){
 					masterPointerForLocalArray = pointerForOriginalArray;
 					for(i = 0; i < particlesToReceive; i++){
 						tempArray_s_x[i] = masterArray_s_x[i];
+						masterArray_f_x = 0;
+						masterArray_f_y = 0;
 						tempArray_f_x[i] = 0;
 						tempArray_f_y[i] = 0;
 						tempArray_s_y[i] = masterArray_s_y[i];
