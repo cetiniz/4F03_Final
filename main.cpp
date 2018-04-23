@@ -378,7 +378,7 @@ int main(int argc, char* argv[]){
 			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			printf("SLAVE RECIEVES WEIGHTS\n");
 			printArray(localWeights, particlesToReceive);
-			printArray(tempArray_f_x, particlesToReceive);
+			printArrayD(tempArray_f_x, particlesToReceive);
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
