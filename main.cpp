@@ -134,9 +134,15 @@ int main(int argc, char* argv[]){
  				s_x[i] = drand48() * imageWidth;
  				s_y[i] = drand48() * imageHeight;
  				printf("Particle L initial positions: x: %d / y: %d\n", s_x[i],s_y[i]);
- 				v_x[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
- 				v_y[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
- 				printf("Particle L initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				if(i%2 ==0){
+ 					v_x[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 					v_y[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 					printf("Particle L initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				} else{
+ 					v_x[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
+ 					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
+ 					printf("Particle L initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				}
  				numParticlesLight--;
  			} else if(numParticlesMedium > 0){
  				w[i] = drand48() * (massMediumMax-massMediumMin+1) + massMediumMin;
@@ -144,9 +150,15 @@ int main(int argc, char* argv[]){
   				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
  				printf("Particle M initial positions: x: %d / y: %d\n", s_x[i],s_y[i]);
- 				v_x[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
- 				v_y[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMax;
- 				printf("Particle M initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				if(i%2 ==0){
+ 					v_x[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
+ 					v_y[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
+ 					printf("Particle M initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				} else{
+ 					v_x[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
+ 					v_y[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
+ 					printf("Particle M initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				}
  				numParticlesMedium--;
  			} else if(numParticlesHeavy > 0){
  				w[i] = drand48() * (massHeavyMax-massHeavyMin+1) + massHeavyMin;
@@ -154,9 +166,15 @@ int main(int argc, char* argv[]){
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
  				printf("Particle H initial positions: x: %d / y: %d\n", s_x[i],s_y[i]);
- 				v_x[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
- 				v_y[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
- 				printf("Particle H initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				if(i%2 ==0){
+ 					v_x[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
+ 					v_y[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
+ 					printf("Particle H initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				} else{
+ 					v_x[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
+ 					v_y[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
+ 					printf("Particle H initial velocities: x: %f / y: %f\n", v_x[i],v_y[i]);
+ 				}
  				numParticlesHeavy--;
  			}
  		}
@@ -265,18 +283,17 @@ int main(int argc, char* argv[]){
 				printf("FORCE******");
 				printArrayD(tempArray_f_x, particlesToReceive);
 
-				j = 0;
 				for(i = 0; i < particlesToReceive; i++){
-				 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive){ //find index where particle number in tempArray is greater than localArray
-				 		j++;
+				 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
+				 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
+				 			printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[i]);
+				 			masterArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 			masterArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 			tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 			tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 		}
 				 	}
-				 	if(pointerForLocalArray[i] < pointerForTempArray[j]){
-				 		masterArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
-				 		masterArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
-				 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
-				 		tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
-				 	}
-				 }
+				}
 			}
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
@@ -440,17 +457,15 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(pointerForTempArray[0]),  particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				
 				//Calculate forces
-				j = 0;
 				for(i = 0; i < particlesToReceive; i++){
-				 	while(pointerForLocalArray[i] >= pointerForTempArray[j] && j < particlesToReceive) { //find index where particle number in tempArray is greater than localArray
-				 		j++;
-				 	}
-				 	if(pointerForLocalArray[i] < pointerForTempArray[j]){
-				 		printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[i]);
-				 		localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
-				 		localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
-				 		tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
-				 		tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
+				 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
+				 			printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[i]);
+				 			localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 			localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 			tempArray_f_x[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 0);
+				 			tempArray_f_y[j] -= computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[i], tempArray_s_y[i], tempWeights[i], 1);
+				 		}
 				 	}
 				}
 			}
