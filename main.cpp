@@ -361,6 +361,8 @@ int main(int argc, char* argv[]){
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
+				printf("The value in tempArray_s_x is: %d\n", tempArray_s_x[i]);
+				printf("The value in tempArray_s_y is: %d\n", tempArray_s_y[i]);
 			}
 			// RING LOOP GOES HERE
 			for(int ringNumber = 0; ringNumber < p - 1; ringNumber++){
