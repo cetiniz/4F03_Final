@@ -45,6 +45,13 @@ void printArray(int * arr, int length){
 	}
 	printf("\n");
 }
+void printArray(double * arr, int length){
+	printf("PRINTING OUT ARRAY\n");
+	for (int i = 0; i < length; i++) {
+		printf("%d ",arr[i]);
+	}
+	printf("\n");
+}
 
 int main(int argc, char* argv[]){
 	
@@ -248,7 +255,7 @@ int main(int argc, char* argv[]){
 				printf("X POSITIONS!");
 				printArray(tempArray_s_x,particlesToReceive);
 				printf("X FORCES!");
-				printArray(tempArray_f_x,particlesToReceive);
+				printArrayD(tempArray_f_x,particlesToReceive);
 
 				//Send to dest AND receive from source
 				//MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
