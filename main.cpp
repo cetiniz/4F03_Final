@@ -283,7 +283,7 @@ int main(int argc, char* argv[]){
 				for(j = 0; j < particlesToReceive; j++) {
 					s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
-					printf("Next positions, x: %d, y: %d\n",s_x[i],s_y[i]);
+					printf("Next positions, x: %d, y: %d\n",s_x[pointerForOriginalArray[j]],s_y[pointerForOriginalArray[j]]);
 				}
 			}
 
