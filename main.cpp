@@ -89,7 +89,7 @@ int main(int argc, char* argv[]){
  	int imageHeight = std::stoi(argv[8]);
 	
  	int particlesToReceive;
- 	int tempParticlesToReceive;
+ 	int tempParticlesToReceive = 0;
  	int particlesPerProcessor = numParticlesTotal/p;
  	
 
@@ -204,6 +204,7 @@ int main(int argc, char* argv[]){
 						masterPointerForLocalArray[m] = i;
 						m++;
 					}
+					tempParticlesToReceive = particlesToReceive;
 				}
 				else {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
@@ -255,8 +256,8 @@ int main(int argc, char* argv[]){
 					 		}
 					 	}
 					}
-					tempParticlesToReceive = particlesToReceive;	
 				}
+
 				MPI_Sendrecv(&(tempWeights[0]), tempParticlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), tempParticlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  tempParticlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), tempParticlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_y[0]),  tempParticlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), tempParticlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -380,6 +381,9 @@ int main(int argc, char* argv[]){
 				tempArray_f_y[i] = 0.00;
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
+
+			tempParticlesToReceive = particlesToReceive;
+
 			// RING LOOP GOES HERE
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
@@ -401,8 +405,6 @@ int main(int argc, char* argv[]){
 					 		}
 					 	}
 					}
-
-					tempParticlesToReceive = particlesToReceive;
 				}
 
 				
