@@ -206,6 +206,9 @@ int main(int argc, char* argv[]){
 					}
 					tempParticlesToReceive = particlesToReceive;
 				}
+				printf("PARTICLES TO RECIEVE: %d\n", particlesToReceive);
+				printf("TEMPPARTICLES TO RECIEVE: %d\n", tempParticlesToReceive);
+				
 				else {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 					particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
