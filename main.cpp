@@ -312,6 +312,8 @@ int main(int argc, char* argv[]){
 					MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 8, MPI_COMM_WORLD, &status);
 					
 				}
+				printf("!!!!!!!X");
+				printArray(weights,particlesToReceive);
 				for(j = 0; j < particlesToReceive; j++) {
 					v_x[pointerForOriginalArray[j]] += timeSubSteps * forces_x[j]/weights[j];
 					v_y[pointerForOriginalArray[j]] += timeSubSteps * forces_y[j]/weights[j];
