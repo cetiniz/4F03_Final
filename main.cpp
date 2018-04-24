@@ -182,7 +182,6 @@ int main(int argc, char* argv[]){
 			for (int dest = 0; dest < p; dest++){
 				if (dest == 0) {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-					tempParticlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 					masterArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			masterArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			masterWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -210,7 +209,6 @@ int main(int argc, char* argv[]){
 				
 				else {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-					tempParticlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 					particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -239,6 +237,8 @@ int main(int argc, char* argv[]){
 				//Send to dest AND receive from source
 				int nextRank = (my_rank-1+p)%p;
 				int prevRank = (my_rank+1)%p;
+
+				int tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				//Send to dest AND receive from source
 				
 				/*printf("POINTER(master)\n");
@@ -270,7 +270,6 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(tempArray_f_y[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(pointerForTempMasterArray[0]), tempParticlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempMasterArray[0]), tempParticlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				
-				tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
 				for(i = 0; i < particlesToReceive; i++){
 				 	for(j = 0; j < tempParticlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
@@ -399,6 +398,7 @@ int main(int argc, char* argv[]){
 				int nextRank = (my_rank-1+p)%p;
 
 				int prevRank = (my_rank+1)%p;
+				int tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
 				//Calculate forces
 				if (ringNumber == 0) {
