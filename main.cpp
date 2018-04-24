@@ -238,7 +238,7 @@ int main(int argc, char* argv[]){
 				int nextRank = (my_rank-1+p)%p;
 				int prevRank = (my_rank+1)%p;
 
-				int tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				
 				//Send to dest AND receive from source
 				
 				/*printf("POINTER(master)\n");
@@ -262,6 +262,8 @@ int main(int argc, char* argv[]){
 					 	}
 					}
 				}
+
+				int tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
 				MPI_Sendrecv(&(tempWeights[0]), tempParticlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), tempParticlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  tempParticlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), tempParticlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -398,7 +400,6 @@ int main(int argc, char* argv[]){
 				int nextRank = (my_rank-1+p)%p;
 
 				int prevRank = (my_rank+1)%p;
-				int tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
 				//Calculate forces
 				if (ringNumber == 0) {
@@ -415,6 +416,7 @@ int main(int argc, char* argv[]){
 					}
 				}
 
+				int tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				
 				MPI_Sendrecv(&(tempWeights[0]), tempParticlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), tempParticlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  tempParticlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), tempParticlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -423,7 +425,7 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(tempArray_f_y[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(pointerForTempArray[0]),  tempParticlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), tempParticlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-				tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				
 
 				for(i = 0; i < particlesToReceive; i++){
 				 	for(j = 0; j < tempParticlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
