@@ -13,7 +13,7 @@
 #define _XOPEN_SOURCE
 #define epsilon 0.000000000000000222
 //#define g pow(6.673*10, -11)
-#define g 0.1
+#define g 0.001
 
 double **contigArrayGenerator(int row, int col){
 	double **contigarray = (double **)malloc(row*sizeof(double));
