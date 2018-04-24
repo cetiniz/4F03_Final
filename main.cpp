@@ -317,11 +317,11 @@ int main(int argc, char* argv[]){
 					v_y[pointerForOriginalArray[j]] += timeSubSteps * forces_y[j]/weights[j];
 					s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
-					printf("!!!!!!!X");
-					printArray(s_x,particlesToReceive);
-					printf("!!!!!!!Y");
-					printArray(s_y,particlesToReceive);
-					printf("!!!!!!!I AM FROM DEST %d\n", dest);
+					//printf("!!!!!!!X");
+					//printArray(s_x,particlesToReceive);
+					//printf("!!!!!!!Y");
+					//printArray(s_y,particlesToReceive);
+					//printf("!!!!!!!I AM FROM DEST %d\n", dest);
 					printf("Next positions, x: %d, y: %d\n",s_x[pointerForOriginalArray[j]],s_y[pointerForOriginalArray[j]]);
 				}
 			}
