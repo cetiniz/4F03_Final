@@ -206,8 +206,7 @@ int main(int argc, char* argv[]){
 					}
 					tempParticlesToReceive = particlesToReceive;
 				}
-				printf("PARTICLES TO RECIEVE: %d\n", particlesToReceive);
-				printf("TEMPPARTICLES TO RECIEVE: %d\n", tempParticlesToReceive);
+
 				
 				else {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
@@ -226,6 +225,9 @@ int main(int argc, char* argv[]){
 						pointerForOriginalArray[m] = i;
 						m++;
 					}
+
+					printf("PARTICLES TO RECIEVE: %d\n", particlesToReceive);
+					printf("TEMPPARTICLES TO RECIEVE: %d\n", tempParticlesToReceive);
 					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
