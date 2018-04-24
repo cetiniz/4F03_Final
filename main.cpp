@@ -89,7 +89,7 @@ int main(int argc, char* argv[]){
  	int imageHeight = std::stoi(argv[8]);
 	
  	int particlesToReceive;
- 	int tempParticlesToReceive = 0;
+ 	int tempParticlesToReceive;
  	int particlesPerProcessor = numParticlesTotal/p;
  	
 
@@ -182,6 +182,7 @@ int main(int argc, char* argv[]){
 			for (int dest = 0; dest < p; dest++){
 				if (dest == 0) {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+					tempParticlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 					masterArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			masterArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			masterWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -204,12 +205,12 @@ int main(int argc, char* argv[]){
 						masterPointerForLocalArray[m] = i;
 						m++;
 					}
-					tempParticlesToReceive = particlesToReceive;
 				}
 
 				
 				else {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+					tempParticlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 					particlesToCompute_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			particlesToCompute_s_y = (int *) malloc(sizeof(int) * particlesToReceive); 
 		 			particleWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -225,8 +226,6 @@ int main(int argc, char* argv[]){
 						pointerForOriginalArray[m] = i;
 						m++;
 					}
-
-					tempParticlesToReceive = particlesToReceive;
 
 					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
@@ -271,6 +270,8 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(tempArray_f_y[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(pointerForTempMasterArray[0]), tempParticlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempMasterArray[0]), tempParticlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				
+				tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+
 				for(i = 0; i < particlesToReceive; i++){
 				 	for(j = 0; j < tempParticlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
 				 		if(masterPointerForLocalArray[i] < pointerForTempMasterArray[j]){
@@ -421,6 +422,8 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(tempArray_f_x[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_f_y[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(pointerForTempArray[0]),  tempParticlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), tempParticlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+				tempParticlesToReceive = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
 				for(i = 0; i < particlesToReceive; i++){
 				 	for(j = 0; j < tempParticlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
