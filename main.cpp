@@ -265,6 +265,8 @@ int main(int argc, char* argv[]){
 
 				int particledReceived = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				int incomingParticles = (nextRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				printf("PARTICLES RECIEVED: %d\n", particledReceived);
+				printf("INCOMING PARTICLES: %d\n", incomingParticles);
 
 				MPI_Sendrecv(&(tempWeights[0]), particledReceived, MPI_INT, nextRank, 1, &(tempWeights[0]), incomingParticles, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particledReceived, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), incomingParticles, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -391,9 +393,6 @@ int main(int argc, char* argv[]){
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
 
-							printf("PARTICLES TO RECIEVE: %d\n", particlesToReceive);
-				printf("TEMPPARTICLES TO RECIEVE: %d\n", tempParticlesToReceive);
-
 			// RING LOOP GOES HERE
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
@@ -419,6 +418,9 @@ int main(int argc, char* argv[]){
 
 				int particledReceived = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				int incomingParticles = (nextRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+
+				printf("PARTICLES RECIEVED: %d\n", particledReceived);
+				printf("INCOMING PARTICLES: %d\n", incomingParticles);
 
 				MPI_Sendrecv(&(tempWeights[0]), particledReceived, MPI_INT, nextRank, 1, &(tempWeights[0]), incomingParticles, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particledReceived, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), incomingParticles, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
