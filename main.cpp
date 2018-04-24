@@ -251,7 +251,7 @@ int main(int argc, char* argv[]){
 				//printArray(masterWeights,1);
 				if (ringNumber == 0) {
 					for(i = 0; i < particlesToReceive; i++){
-					 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
+					 	for(j = i+1; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
 					 		if(masterPointerForLocalArray[i] < pointerForTempMasterArray[j]){
 					 			//printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[i]);
 					 			masterArray_f_x[i] += computeForce(masterArray_s_x[i], masterArray_s_y[i], masterWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0);
@@ -410,7 +410,7 @@ int main(int argc, char* argv[]){
 				//Calculate forces
 				if (ringNumber == 0) {
 					for(i = 0; i < particlesToReceive; i++){
-					 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
+					 	for(j = i+1; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
 					 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
 					 			//printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[i]);
 					 			localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0);
