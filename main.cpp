@@ -166,16 +166,16 @@ int main(int argc, char* argv[]){
 			int masterParticlesToReceive = (0 < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 			int * masterWeights;
 			int * masterArray_s_x;
-			double * masterArray_f_x = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
+			double * masterArray_f_x = (double *) malloc(sizeof(double) * masterParticlesToReceive); 
 			int * masterArray_s_y;
-			double * masterArray_f_y = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
+			double * masterArray_f_y = (double *) malloc(sizeof(double) * masterParticlesToReceive); 
 			int * masterPointerForLocalArray;			
 
 			int * tempWeights = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
 			int * tempArray_s_x = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
-			double * tempArray_f_x = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
+			double * tempArray_f_x = (double *) malloc(sizeof(double) * masterParticlesToReceive); 
 			int * tempArray_s_y = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
-			double * tempArray_f_y = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
+			double * tempArray_f_y = (double *) malloc(sizeof(double) * masterParticlesToReceive); 
 			int * pointerForTempMasterArray = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
 
 			// ************** ALLOCATED FOR SLAVES *************** //
