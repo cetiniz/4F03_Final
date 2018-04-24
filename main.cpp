@@ -234,7 +234,6 @@ int main(int argc, char* argv[]){
 					masterArray_s_y = particlesToCompute_s_y;
 					masterArray_f_y = (double *) malloc(sizeof(double) * particlesToReceive);
 					masterPointerForLocalArray = pointerForOriginalArray;
-					tempParticlesToReceive = particlesToReceive;
 					for(i = 0; i < particlesToReceive; i++){
 						tempArray_s_x[i] = masterArray_s_x[i];
 						tempArray_s_y[i] = masterArray_s_y[i];
@@ -255,7 +254,7 @@ int main(int argc, char* argv[]){
 				printf("My thread number is %d and my loop (ringNumMaster) is %d\n", my_rank, ringNumber);
 
 				for(i = 0; i < particlesToReceive; i++){
-				 	for(j = 0; j < tempParticlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
+				 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
 				 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
 				 			printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[j]);
 				 			masterArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0);
@@ -270,19 +269,19 @@ int main(int argc, char* argv[]){
 				int nextRank = (my_rank-1+p)%p;;
 				int prevRank = (my_rank+1)%p;
 
-				MPI_Sendrecv(&(tempWeights[0]), tempParticlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), tempParticlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_s_x[0]),  tempParticlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), tempParticlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_s_y[0]),  tempParticlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), tempParticlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_f_x[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_f_y[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(pointerForTempArray[0]), tempParticlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), tempParticlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(pointerForTempArray[0]), particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				
 				printf("WEIghT******");
-				printArray(localWeights, tempParticlesToReceive);
+				printArray(localWeights, particlesToReceive);
 				printf("POINTER******");
-				printArray(pointerForLocalArray, tempParticlesToReceive);
+				printArray(pointerForLocalArray, particlesToReceive);
 				printf("FORCE******");
-				printArrayD(tempArray_f_x, tempParticlesToReceive);
+				printArrayD(tempArray_f_x, particlesToReceive);
 
 			}
 
@@ -387,7 +386,6 @@ int main(int argc, char* argv[]){
 			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			tempParticlesToReceive = particlesToReceive;
 			printf("SLAVE RECIEVES WEIGHTS\n");
 			printArray(localWeights, particlesToReceive);
 			printArrayD(tempArray_f_x, particlesToReceive);
@@ -412,7 +410,7 @@ int main(int argc, char* argv[]){
 
 				//Calculate forces
 				for(i = 0; i < particlesToReceive; i++){
-				 	for(j = 0; j < tempParticlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
+				 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
 				 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
 				 			printf("Local particle at position %d is interacting with temp particle at position %d\n", localArray_s_x[i], tempArray_s_x[j]);
 				 			localArray_s_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0);
@@ -423,12 +421,12 @@ int main(int argc, char* argv[]){
 				 	}
 				}	
 
-				MPI_Sendrecv(&(tempWeights[0]), tempParticlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), tempParticlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_s_x[0]),  tempParticlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), tempParticlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_s_y[0]),  tempParticlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), tempParticlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_f_x[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(tempArray_f_y[0]),  tempParticlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), tempParticlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-				MPI_Sendrecv(&(pointerForTempArray[0]),  tempParticlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), tempParticlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+				MPI_Sendrecv(&(pointerForTempArray[0]),  particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				
 				printf("WEIghT");
 				printArray(localWeights, particlesToReceive);
