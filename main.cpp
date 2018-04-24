@@ -263,7 +263,11 @@ int main(int argc, char* argv[]){
 					}
 				}
 
-				int particledReceived = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				if(ringNumber ==0){
+					int particledReceived = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				} else{
+					int particledReceived = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				}
 				int incomingParticles = (nextRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				printf("PARTICLES RECIEVED: %d\n", particledReceived);
 				printf("INCOMING PARTICLES: %d\n", incomingParticles);
@@ -416,7 +420,11 @@ int main(int argc, char* argv[]){
 					}
 				}
 
-				int particledReceived = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				if(ringNumber ==0){
+					int particledReceived = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				} else{
+					int particledReceived = (prevRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				}
 				int incomingParticles = (nextRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
 				printf("PARTICLES RECIEVED: %d\n", particledReceived);
