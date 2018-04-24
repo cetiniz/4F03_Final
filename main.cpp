@@ -317,10 +317,12 @@ int main(int argc, char* argv[]){
 					v_y[pointerForOriginalArray[j]] += timeSubSteps * forces_y[j]/weights[j];
 					s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
-					//printArray(s_x,particlesToReceive);
-					//printArray(s_y,particlesToReceive);
-					//printf("!!!!!!!I AM FROM DEST %d\n", dest);
-					//printf("Next positions, x: %d, y: %d\n",s_x[pointerForOriginalArray[j]],s_y[pointerForOriginalArray[j]]);
+					printf("!!!!!!!X");
+					printArray(s_x,particlesToReceive);
+					printf("!!!!!!!Y");
+					printArray(s_y,particlesToReceive);
+					printf("!!!!!!!I AM FROM DEST %d\n", dest);
+					printf("Next positions, x: %d, y: %d\n",s_x[pointerForOriginalArray[j]],s_y[pointerForOriginalArray[j]]);
 				}
 			}
 
@@ -430,8 +432,8 @@ int main(int argc, char* argv[]){
 				}
 				int incomingParticles = (nextRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
-				printf("PARTICLES RECIEVED: %d\n", particledReceived);
-				printf("INCOMING PARTICLES: %d\n", incomingParticles);
+				//printf("PARTICLES RECIEVED: %d\n", particledReceived);
+				//printf("INCOMING PARTICLES: %d\n", incomingParticles);
 
 				MPI_Sendrecv(&(tempWeights[0]), particledReceived, MPI_INT, nextRank, 1, &(tempWeights[0]), incomingParticles, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particledReceived, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), incomingParticles, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
