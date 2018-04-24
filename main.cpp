@@ -234,8 +234,6 @@ int main(int argc, char* argv[]){
 					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);		
 				}
 
-				printf("PARTICLES TO RECIEVE: %d\n", particlesToReceive);
-				printf("TEMPPARTICLES TO RECIEVE: %d\n", tempParticlesToReceive);
 			}
 			// /************** RING LOOP WILL GO HERE***************/
 			for(int ringNumber = 0; ringNumber < (p); ringNumber++){				
@@ -289,7 +287,6 @@ int main(int argc, char* argv[]){
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
 			for(int dest = 0; dest < p; dest++) {
 				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
-
 				if (dest == 0) {
 					weights = masterWeights;
 					forces_x = masterArray_f_x;
@@ -361,6 +358,7 @@ int main(int argc, char* argv[]){
  /*************************** SLAVE TASKS **********************************/
 	if(my_rank > 0){
  		particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+ 		tempParticlesToReceive = particlesToReceive;
 		localWeights = (int *) malloc(sizeof(int) * particlesToReceive); 
 		localArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
 		localArray_f_x = (double *) malloc(sizeof(double) * particlesToReceive); 
@@ -390,7 +388,8 @@ int main(int argc, char* argv[]){
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
 
-			tempParticlesToReceive = particlesToReceive;
+							printf("PARTICLES TO RECIEVE: %d\n", particlesToReceive);
+				printf("TEMPPARTICLES TO RECIEVE: %d\n", tempParticlesToReceive);
 
 			// RING LOOP GOES HERE
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
