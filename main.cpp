@@ -241,12 +241,12 @@ int main(int argc, char* argv[]){
 				
 				//Send to dest AND receive from source
 				
-				/*printf("POINTER(master)\n");
-				printArray(masterPointerForLocalArray, particlesToReceive);
+				printf("X POSITIONS(master)\n");
+				printArray(tempArray_f_x, particlesToReceive);
 				printf("Weight(Master)\n");
 				printArray(masterWeights, particlesToReceive);
 				printf("FORCE(master)\n");
-				printArrayD(masterArray_f_x, particlesToReceive);*/
+				printArrayD(masterArray_f_x, particlesToReceive);
 
 				//printArray(masterWeights,1);
 				if (ringNumber == 0) {
@@ -368,8 +368,6 @@ int main(int argc, char* argv[]){
 		
 	}
 
-
-
  /*************************** SLAVE TASKS **********************************/
 	if(my_rank > 0){
  		particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
@@ -443,8 +441,6 @@ int main(int argc, char* argv[]){
 				MPI_Sendrecv(&(tempArray_f_x[0]),  particledReceived, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), incomingParticles, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_f_y[0]),  particledReceived, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), incomingParticles, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(pointerForTempArray[0]),  particledReceived, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), incomingParticles, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-				
 
 				for(i = 0; i < particlesToReceive; i++){
 				 	for(j = 0; j < incomingParticles; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
