@@ -242,7 +242,7 @@ int main(int argc, char* argv[]){
 				//Send to dest AND receive from source
 				
 				printf("X POSITIONS(master)\n");
-				printArray(tempArray_f_x, particlesToReceive);
+				printArrayD(tempArray_f_x, particlesToReceive);
 				printf("Weight(Master)\n");
 				printArray(masterWeights, particlesToReceive);
 				printf("FORCE(master)\n");
