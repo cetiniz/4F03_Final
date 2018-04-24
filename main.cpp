@@ -328,12 +328,12 @@ int main(int argc, char* argv[]){
 			// distribute particle colours at given position to array to create image
 			for(i = 0; i < numParticlesTotal; i++){
 				int index = (s_y[i] * imageWidth + s_x[i])*3;
-				/*printf("S_X: %d ", s_x[i]);
+				printf("S_X: %d ", s_x[i]);
 				printf("\n");
 				printf("S_Y: %d ", s_y[i]);
 				printf("\n");
 				printf("INDEX: %d ", index);
-				printf("\n");*/
+				printf("\n");
 				if (index < (sizeof(unsigned char) *3*imageWidth*imageHeight) && index >= 0){
 					if(w[i] >= 1 && w[i] <= 5){
 						image[index] = 68;
@@ -444,7 +444,7 @@ int main(int argc, char* argv[]){
 
 				for(i = 0; i < particlesToReceive; i++){
 				 	for(j = 0; j < incomingParticles; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
-				 		printf("localPointer(slave): %d  ;   remote Pointer(slave):%d\n",pointerForLocalArray[i],pointerForTempArray[j]);
+				 		//printf("localPointer(slave): %d  ;   remote Pointer(slave):%d\n",pointerForLocalArray[i],pointerForTempArray[j]);
 				 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
 				 			localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0);
 				 			localArray_f_y[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 1);
