@@ -271,8 +271,8 @@ int main(int argc, char* argv[]){
 				}
 				int incomingParticles = (nextRank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
-				printf("PARTICLES RECIEVED: %d\n", particledReceived);
-				printf("INCOMING PARTICLES: %d\n", incomingParticles);
+				//printf("PARTICLES RECIEVED: %d\n", particledReceived);
+				//printf("INCOMING PARTICLES: %d\n", incomingParticles);
 
 				MPI_Sendrecv(&(tempWeights[0]), particledReceived, MPI_INT, nextRank, 1, &(tempWeights[0]), incomingParticles, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 				MPI_Sendrecv(&(tempArray_s_x[0]),  particledReceived, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), incomingParticles, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -328,12 +328,12 @@ int main(int argc, char* argv[]){
 			// distribute particle colours at given position to array to create image
 			for(i = 0; i < numParticlesTotal; i++){
 				int index = (s_y[i] * imageWidth + s_x[i])*3;
-				printf("S_X: %d ", s_x[i]);
+				/*printf("S_X: %d ", s_x[i]);
 				printf("\n");
 				printf("S_Y: %d ", s_y[i]);
 				printf("\n");
 				printf("INDEX: %d ", index);
-				printf("\n");
+				printf("\n"); */
 				if (index < (sizeof(unsigned char) *3*imageWidth*imageHeight) && index >= 0){
 					if(w[i] >= 1 && w[i] <= 5){
 						image[index] = 68;
@@ -398,7 +398,7 @@ int main(int argc, char* argv[]){
 				tempArray_f_y[i] = 0.00;
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
-
+			printArray(tempArray_s_x,particlesToReceive);
 			// RING LOOP GOES HERE
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
