@@ -130,7 +130,7 @@ int main(int argc, char* argv[]){
  	double minTime, maxTime, avgTime;
  	int counter;
 
- 	nt totalImageSize = sizeof(unsigned char) * 3 * imageWidth*imageHeight;
+ 	int totalImageSize = sizeof(unsigned char) * 3 * imageWidth*imageHeight;
 
 
  	MPI_Status status;
@@ -200,8 +200,6 @@ int main(int argc, char* argv[]){
  		maxTime = 0;
  		avgTime = 0;
  		counter = 0;
-
- 		int ** sendItAll = (int **) malloc(sizeof(int*) * 4);
 
 
  		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
@@ -472,35 +470,8 @@ int main(int argc, char* argv[]){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
 				int nextRank = (my_rank-1+p)%p;
-				//if(my_rank == p-1){
-					//nextRank = 1;
-				//} else {
-					//nextRank = my_rank + 1;
-				//}
-
 				int prevRank = (my_rank+1)%p;
-				//if(my_rank == 1){
-					//prevRank = p-1;
-				//} else {
-					//prevRank = my_rank - 1;
-				//}
-				//CHANGE BASED ON EVEN OR ODD
-				//IF EVEN
-				// if(my_rank % 2 == 0){
-				// 	MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
-				// 	MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
-				// }
-				// else {
-				// 	MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
-				// 	MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
-				// }
-				/*printf("WEIghT\n");
-				printArray(localWeights, particlesToReceive);
-				printf("POINTER\n");
-				printArray(pointerForLocalArray, particlesToReceive);
-				printf("FORCE \n");
-				printArrayD(tempArray_f_x, particlesToReceive);
-				printArrayD(tempArray_f_y, particlesToReceive);*/
+
 				//Calculate forces
 				if (ringNumber == 0) {
 					for(i = 0; i < particlesToReceive; i++){
