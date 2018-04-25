@@ -309,7 +309,7 @@ int main(int argc, char* argv[]){
 			}
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
-			#pragma omp parallel for
+
 			for(int dest = 0; dest < p; dest++) {
 				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
