@@ -187,16 +187,16 @@ int main(int argc, char* argv[]){
 			double * tempArray_f_y = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
 			int * pointerForTempMasterArray = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
 
-		
-
-		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
-			// ************** ALLOCATED FOR MASTER *************** //
 			double start, end;
 			minTime = 10000000;
  			maxTime = 0;
  			avgTime = 0;
  			counter = 0;
   			start = MPI_Wtime(); //start timer
+
+		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
+			// ************** ALLOCATED FOR MASTER *************** //
+
 
 			// ************** ALLOCATED FOR SLAVES *************** //
 			for (int dest = 0; dest < p; dest++){
