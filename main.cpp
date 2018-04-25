@@ -196,9 +196,10 @@ int main(int argc, char* argv[]){
  			maxTime = 0;
  			avgTime = 0;
  			counter = 0;
-  			start = MPI_Wtime(); //start timer
+  			
 
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
+			start = MPI_Wtime(); //start timer
 			// ************** ALLOCATED FOR MASTER *************** //
 			
 
@@ -400,8 +401,7 @@ int main(int argc, char* argv[]){
 			avgTime += time;
 			counter++;
 
-			printf("%f %f %f\n", minTime, maxTime, avgTime/counter); //end time 
-			printf("counter: %d\n", counter);
+			
 
 			// Make sure LOGIC HERE IS SOUND
 			if (frameNum % numSubSteps == 0) {
@@ -414,6 +414,8 @@ int main(int argc, char* argv[]){
 			}
 			free(image);
 		}
+
+		printf("%f %f %f\n", minTime, maxTime, avgTime/counter); //end time 
 
 
 		
