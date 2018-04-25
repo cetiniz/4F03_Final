@@ -1,5 +1,5 @@
 CC=mpiCC
-CFLAGS=-c -g -Wall -std=c++11
+CFLAGS=-c -g -Wall -std=c++11 -fopenmp
 LDFLAGS=-lm
 OBJECTS=$(SOURCES:.cpp=.o)
 
@@ -10,7 +10,7 @@ EXECUTABLE=x.project
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ -fopenmp
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ 
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
