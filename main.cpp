@@ -310,7 +310,7 @@ int main(int argc, char* argv[]){
 			}
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
-
+			#pragma omp parallel for 
 			for(int dest = 0; dest < p; dest++) {
 				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
@@ -441,7 +441,7 @@ int main(int argc, char* argv[]){
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
 			// RING LOOP GOES HERE
-			#pragma omp parallel for default(shared) reduction(+:localArray_f_x[:particlesToReceive],localArray_f_y[:particlesToReceive]), reduction(-:tempArray_f_x[:particlesToReceive],tempArray_f_y[:particlesToReceive])
+
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
