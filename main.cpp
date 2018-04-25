@@ -143,11 +143,17 @@ int main(int argc, char* argv[]){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
  				s_x[i] = drand48() * imageWidth;
  				s_y[i] = drand48() * imageHeight;
- 				if(i%2 ==0){
+ 				if(i%4==0){
  					v_x[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  					v_y[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
- 				} else{
+ 				} else if(i%3==0){
  					v_x[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
+ 					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
+ 				} else if(i%2==0){
+ 					v_x[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
+ 					v_y[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
+ 				} else{
+ 					v_x[i] = drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin;
  					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  				}
  				#pragma omp atomic 
@@ -156,11 +162,17 @@ int main(int argc, char* argv[]){
  				w[i] = drand48() * (massMediumMax-massMediumMin+1) + massMediumMin;
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				if(i%2 ==0){
+ 				if(i%4==0){
  					v_x[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
  					v_y[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
- 				} else{
+ 				} else if(i%3==0){
  					v_x[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
+ 					v_y[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
+ 				} else if(i%2==0){
+ 					v_x[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
+ 					v_y[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
+ 				} else{
+ 					v_x[i] = drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin;
  					v_y[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  				}
  				#pragma omp atomic 
@@ -169,11 +181,17 @@ int main(int argc, char* argv[]){
  				w[i] = drand48() * (massHeavyMax-massHeavyMin+1) + massHeavyMin;
  				s_x[i] = drand48()*imageWidth;
  				s_y[i] = drand48()*imageHeight;
- 				if(i%2 ==0){
+ 				if(i%4==0){
  					v_x[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
  					v_y[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
- 				} else{
+ 				} else if(i%3==0){
  					v_x[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
+ 					v_y[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
+ 				} else if(i%2==0){
+ 					v_x[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
+ 					v_y[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
+ 				} else{
+ 					v_x[i] = drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin;
  					v_y[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  				}
  				#pragma omp atomic 
