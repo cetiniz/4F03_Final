@@ -201,8 +201,6 @@ int main(int argc, char* argv[]){
  		avgTime = 0;
  		counter = 0;
 
- 		int ** sendItAll = (int **) malloc(sizeof(int*) * 4);
-
 
  		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			start = MPI_Wtime(); //start timer
@@ -463,8 +461,8 @@ int main(int argc, char* argv[]){
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
-				tempArray_f_x[i] = 0.00;
-				tempArray_f_y[i] = 0.00;
+				// tempArray_f_x[i] = 0.00;
+				// tempArray_f_y[i] = 0.00;
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
 			// RING LOOP GOES HERE
