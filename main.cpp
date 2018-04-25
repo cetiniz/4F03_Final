@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
 
- 		
+ 		#pragma omp parallel for reduction(+:numParticlesLight,numParticlesMedium,numParticlesHeavy)
  		for(i = 0; i < numParticlesTotal; i++){
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
@@ -199,12 +199,13 @@ int main(int argc, char* argv[]){
  			counter = 0;
   			start = MPI_Wtime(); //start timer
 
+  			#pragma omp parallel for 
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			// ************** ALLOCATED FOR MASTER *************** //
 
 
 			// ************** ALLOCATED FOR SLAVES *************** //
-			#pragma omp parallel for 
+
 			for (int dest = 0; dest < p; dest++){
 
 				if (dest == 0) {
