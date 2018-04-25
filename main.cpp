@@ -98,7 +98,7 @@ int main(int argc, char* argv[]){
 
  	int imageWidth = std::stoi(argv[7]);
  	int imageHeight = std::stoi(argv[8]);
- 	
+
  	int particlesToReceive;
  	int particlesPerProcessor = numParticlesTotal/p;
  	
@@ -200,7 +200,7 @@ int main(int argc, char* argv[]){
  		counter = 0;
 
  		int ** sendItAll = (int **) malloc(sizeof(int*) * 4);
- 		
+
 
  		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			start = MPI_Wtime(); //start timer
@@ -329,7 +329,7 @@ int main(int argc, char* argv[]){
 						forces_x = masterArray_f_x;
 						forces_y = masterArray_f_y;
 						pointerForOriginalArray = masterPointerForLocalArray;
-						
+
 					}
 					else {
 						weights = (int *) malloc(sizeof(int) * particlesToReceive);
@@ -340,13 +340,13 @@ int main(int argc, char* argv[]){
 						MPI_Recv(&(forces_x[0]), particlesToReceive, MPI_DOUBLE, dest, 8, MPI_COMM_WORLD, &status);
 						MPI_Recv(&(forces_y[0]), particlesToReceive, MPI_DOUBLE, dest, 8, MPI_COMM_WORLD, &status);
 						MPI_Recv(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 8, MPI_COMM_WORLD, &status);
-						
+
 					}
 					for(j = 0; j < particlesToReceive; j++) {
 					//printf("%f ",timeSubSteps * forces_x[j]);
 						v_x[pointerForOriginalArray[j]] += timeSubSteps * forces_x[j]/weights[j];
 						v_y[pointerForOriginalArray[j]] += timeSubSteps * forces_y[j]/weights[j];
-						
+
 						s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
 						s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
 
@@ -354,7 +354,7 @@ int main(int argc, char* argv[]){
 							v_x[pointerForOriginalArray[j]] = -1*v_x[pointerForOriginalArray[j]];
 							v_y[pointerForOriginalArray[j]] = -1*v_y[pointerForOriginalArray[j]];
 						}
-						
+
 					//printf("%f\n",timeSubSteps * forces_x[j]/weights[j]);
 					//printArray(s_x,particlesToReceive);
 					//printArray(s_y,particlesToReceive);
@@ -366,6 +366,7 @@ int main(int argc, char* argv[]){
 				unsigned char* image = (unsigned char *) calloc(3*imageWidth*imageHeight, sizeof(unsigned char));
 			// distribute particle colours at given position to array to create image
 			//#pragma omp for
+				int totalImageSize = sizeof(unsigned char) * 3 * imageWidth*imageHeight;
 				for(i = 0; i < numParticlesTotal; i++){
 					int index = (s_y[i] * imageWidth + s_x[i])*3;
 				//printf("%d : %d\n",s_y[i],(sizeof(unsigned char) * 3 * imageWidth*imageHeight));
@@ -376,8 +377,8 @@ int main(int argc, char* argv[]){
 				printf("INDEX: %d ", index);
 				printf("\n");*/
 				//printf("%d : %d\n ",index,(sizeof(unsigned char) * 3 * imageWidth*imageHeight));
-					if (index < (sizeof(unsigned char) * 3 * imageWidth*imageHeight) && index >= 0){
-						
+					if (index < (totalImageSize) && index >= 0){
+
 						if(w[i] >= massLightMin && w[i] <= massLightMax){
 							image[index] = 68;
 							image[index+1] = 214;
@@ -409,7 +410,7 @@ int main(int argc, char* argv[]){
 				avgTime += time;
 				counter++;
 
-				
+
 
 			// Make sure LOGIC HERE IS SOUND
 				if (frameNum % numSubSteps == 0) {
@@ -513,7 +514,7 @@ int main(int argc, char* argv[]){
 					 	}
 					 }
 					}
-					
+
 					MPI_Sendrecv(&(tempWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 					MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 					MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
