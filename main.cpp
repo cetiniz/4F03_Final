@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
 
- 		#pragma omp atomic 
+ 		#pragma omp parallel for 
  		for(i = 0; i < numParticlesTotal; i++){
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
@@ -150,6 +150,7 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  				}
+ 				#pragma omp atomic 
  				numParticlesLight--;
  				printf("LIGHT: %d\n", numParticlesLight);
  			} else if(numParticlesMedium > 0){
@@ -163,6 +164,7 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  					v_y[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  				}
+ 				#pragma omp atomic 
  				numParticlesMedium--;
  			} else if(numParticlesHeavy > 0){
  				w[i] = drand48() * (massHeavyMax-massHeavyMin+1) + massHeavyMin;
@@ -175,6 +177,7 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  					v_y[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  				}
+ 				#pragma omp atomic 
  				numParticlesHeavy--;
  			}
  		}
