@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
 
- 		#pragma omp atomic update
+ 		#pragma omp atomic 
  		for(i = 0; i < numParticlesTotal; i++){
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
