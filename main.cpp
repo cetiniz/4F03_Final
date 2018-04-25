@@ -441,7 +441,7 @@ int main(int argc, char* argv[]){
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
 			// RING LOOP GOES HERE
-			#pragma omp parallel for default(shared) reduction(+: result)
+			#pragma omp parallel for default(shared) reduction(+:localArray_f_x[i],localArray_f_y[i]), reduction(-:tempArray_f_x[j],tempArray_f_y[j])
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
