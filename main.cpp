@@ -381,18 +381,18 @@ int main(int argc, char* argv[]){
 					if (index < (totalImageSize) && index >= 0){
 
 						if(w[i] >= massLightMin && w[i] <= massLightMax){
-							image[index] = 68;
-							image[index+1] = 214;
-							image[index+2] = 44;
+							image[index] = 170;
+							image[index+1] = 160;
+							image[index+2] = 255;
 						} else if(w[i] >= massMediumMin && w[i] <= massMediumMax){
-							image[index] = 135;
-							image[index+1] = 206;
-							image[index+2] = 250;
+							image[index] = 255;
+							image[index+1] = 236;
+							image[index+2] = 160;
 
 						} else{
 							image[index] = 255;
-							image[index+1] = 20;
-							image[index+2] = 147;
+							image[index+1] = 189;
+							image[index+2] = 160;
 						}
 					}
 				}
