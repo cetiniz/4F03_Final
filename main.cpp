@@ -379,9 +379,9 @@ int main(int argc, char* argv[]){
 					if (index < (totalImageSize) && index >= 0){
 
 						if(w[i] >= massLightMin && w[i] <= massLightMax){
-							image[index] = 255;
+							image[index] = 0;
 							image[index+1] = 160;
-							image[index+2] = 0;
+							image[index+2] = 255;
 						} else if(w[i] >= massMediumMin && w[i] <= massMediumMax){
 							image[index] = 0;
 							image[index+1] = 255;
