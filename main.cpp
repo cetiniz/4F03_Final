@@ -204,8 +204,9 @@ int main(int argc, char* argv[]){
 
 
 			// ************** ALLOCATED FOR SLAVES *************** //
+			#pragma omp parallel for 
 			for (int dest = 0; dest < p; dest++){
-				#pragma omp parallel for 
+
 				if (dest == 0) {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 					masterArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
