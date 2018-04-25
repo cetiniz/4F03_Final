@@ -11,10 +11,10 @@ EXECUTABLE=x.project
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ 
+	$(CC) $(CXXFLAGS) $(LDFLAGS) $(OBJECTS) -o $@ 
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(CXXFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 clean:
 	rm *.o x.*
