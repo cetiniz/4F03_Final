@@ -341,6 +341,11 @@ int main(int argc, char* argv[]){
 					
 					s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
+
+					if(s_x[pointerForOriginalArray[j]] >= imageWidth || s_x[pointerForOriginalArray[j]] < 0 || s_y[pointerForOriginalArray[j]] >= imageHeight || s_y[pointerForOriginalArray[j]] < 0){
+						v_x[pointerForOriginalArray[j]] = -1*v_x[pointerForOriginalArray[j]];
+						v_y[pointerForOriginalArray[j]] = -1*v_y[pointerForOriginalArray[j]];
+					}
 					
 					//printf("%f\n",timeSubSteps * forces_x[j]/weights[j]);
 					//printArray(s_x,particlesToReceive);
@@ -395,6 +400,9 @@ int main(int argc, char* argv[]){
 			avgTime += time;
 			counter++;
 
+			printf("%f %f %f\n", minTime, maxTime, avgTime/counter); //end time 
+			printf("counter: %d\n", counter);
+
 			// Make sure LOGIC HERE IS SOUND
 			if (frameNum % numSubSteps == 0) {
 
@@ -407,8 +415,7 @@ int main(int argc, char* argv[]){
 			free(image);
 		}
 
-		printf("%f %f %f\n", minTime, maxTime, avgTime/counter); //end time 
-		printf("counter: %d\n", counter);
+
 		
 	}
 
