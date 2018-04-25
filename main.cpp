@@ -10,6 +10,8 @@
 #include "savebmp.h"
 #include "properties.h"
 
+#include <omp.h>
+
 #define _XOPEN_SOURCE
 #define epsilon 0.000000000000000222
 //#define g pow(6.673*10, -11)
@@ -77,7 +79,7 @@ int main(int argc, char* argv[]){
 
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
-
+	omp_set_dynamic(0);
 	//variables
 	int numParticlesLight = std::stoi(argv[1]);
 	int numParticlesMedium = std::stoi(argv[2]);
@@ -131,6 +133,7 @@ int main(int argc, char* argv[]){
 
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
+ 		#pragma omp for
  		for(i = 0; i < numParticlesTotal; i++){
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
@@ -143,6 +146,7 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  				}
+ 				#pragma omp atomic 
  				numParticlesLight--;
  			} else if(numParticlesMedium > 0){
  				w[i] = drand48() * (massMediumMax-massMediumMin+1) + massMediumMin;
@@ -155,6 +159,7 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  					v_y[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  				}
+ 				#pragma omp atomic 
  				numParticlesMedium--;
  			} else if(numParticlesHeavy > 0){
  				w[i] = drand48() * (massHeavyMax-massHeavyMin+1) + massHeavyMin;
@@ -167,6 +172,7 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  					v_y[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  				}
+ 				#pragma omp atomic 
  				numParticlesHeavy--;
  			}
  		}
