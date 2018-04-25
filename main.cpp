@@ -253,17 +253,10 @@ int main(int argc, char* argv[]){
 					}
 
 
-					sendItAll[0] = &(particleWeights[0]);
-					sendItAll[1] = &(particlesToCompute_s_x[0]);
-					sendItAll[2] = &(particlesToCompute_s_y[0]);
-					sendItAll[3] = &(pointerForOriginalArray[0]);
-
-					MPI_Send(&(sendItAll[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-
-					// MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					// MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					// MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					// MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);	
+					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);	
 
 
 					free(particleWeights);
@@ -460,20 +453,10 @@ int main(int argc, char* argv[]){
  	/******* Recieve particles from MASTER *******/
 		for (int numFrames = 0; numFrames < numSteps * numSubSteps; numFrames++){
 
-			
-
-			MPI_Recv(&(sendItAll[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-
-			localWeights[0] = sendItAll[0][0];
-			localArray_s_x[0] = sendItAll[1][0];
-			localArray_s_y[0] = sendItAll[2][0];
-			pointerForLocalArray[0] = sendItAll[3][0];
-
-
-			// MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			// MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			// MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			// MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
