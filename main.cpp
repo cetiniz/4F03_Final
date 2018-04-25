@@ -10,6 +10,8 @@
 #include "savebmp.h"
 #include "properties.h"
 
+#include <omp.h>
+
 
 
 #define _XOPEN_SOURCE
@@ -80,6 +82,8 @@ int main(int argc, char* argv[]){
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 
+	omp_set_dynamic(0); 
+
 	//variables
 	int numParticlesLight = std::stoi(argv[1]);
 	int numParticlesMedium = std::stoi(argv[2]);
@@ -133,6 +137,8 @@ int main(int argc, char* argv[]){
 
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
+
+ 		#pragma omp parallel for
  		for(i = 0; i < numParticlesTotal; i++){
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
