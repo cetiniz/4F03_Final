@@ -442,11 +442,13 @@ int main(int argc, char* argv[]){
 		pointerForLocalArray = (int *) calloc(particlesToReceive,sizeof(int));  
 
 		tempWeights = (int *) calloc(particlesToReceive,sizeof(int)); 
-		tempArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
+		tempArray_s_x = (int *) calloc(particlesToReceive,sizeof(int)); 
 		tempArray_f_x = (double *) calloc(particlesToReceive,sizeof(double)); 
-		tempArray_s_y = (int *) malloc(sizeof(int) * particlesToReceive);  
+		tempArray_s_y = (int *) calloc(particlesToReceive,sizeof(int));  
 		tempArray_f_y = (double *) calloc(particlesToReceive,sizeof(double)); 
-		pointerForTempArray = (int *) malloc(sizeof(int) * particlesToReceive); 
+		pointerForTempArray = (int *) calloc(particlesToReceive,sizeof(int)); 
+
+		int ** sendItAll = (int **) malloc(sizeof(int*) * 4);
 
  	/******* Recieve particles from MASTER *******/
 		for (int numFrames = 0; numFrames < numSteps * numSubSteps; numFrames++){
@@ -459,8 +461,8 @@ int main(int argc, char* argv[]){
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
 				tempArray_s_y[i] = localArray_s_y[i];
-				// tempArray_f_x[i] = 0.00;
-				// tempArray_f_y[i] = 0.00;
+				tempArray_f_x[i] = 0.00;
+				tempArray_f_y[i] = 0.00;
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
 			// RING LOOP GOES HERE
