@@ -383,7 +383,7 @@ int main(int argc, char* argv[]){
 
 			end = MPI_Wtime();
 			double time = end-start;
-			printf("time: %f\n", time);
+			//printf("time: %f\n", time);
 			if(time <= minTime){
 				minTime = time;
 			} 
