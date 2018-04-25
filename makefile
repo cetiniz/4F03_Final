@@ -10,7 +10,7 @@ EXECUTABLE=x.project
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ -fopenmp
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
