@@ -266,8 +266,18 @@ int main(int argc, char* argv[]){
 				}
 			}
 			// /************** RING LOOP WILL GO HERE***************/
-			for(int ringNumber = 0; ringNumber < (p); ringNumber++){	
-	
+			for(int ringNumber = 0; ringNumber < (p); ringNumber++){				
+				//Send to dest AND receive from source
+				int nextRank = (my_rank-1+p)%p;
+				int prevRank = (my_rank+1)%p;
+				//Send to dest AND receive from source
+				
+				/*printf("POINTER(master)\n");
+				printArray(masterPointerForLocalArray, particlesToReceive);
+				printf("S_X(Master)\n");
+				printArray(masterArray_s_x, particlesToReceive);
+				printf("FORCE(master)\n");
+				printArrayD(masterArray_f_x, particlesToReceive);*/
 
 				//printArray(masterWeights,1);
 				if (ringNumber == 0) {
@@ -283,12 +293,12 @@ int main(int argc, char* argv[]){
 					 	}
 					 }	
 					}
-					MPI_Sendrecv(&(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, (my_rank-1+p)%p, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, (my_rank+1)%p, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, (my_rank-1+p)%p, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, (my_rank+1)%p, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(pointerForTempMasterArray[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 6, &(pointerForTempMasterArray[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(pointerForTempMasterArray[0]), particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempMasterArray[0]), particlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 					if (ringNumber == (p-1)){
 						for(i = 0; i < particlesToReceive; i++) {
 							masterArray_f_x[i] += tempArray_f_x[i];
@@ -459,6 +469,8 @@ int main(int argc, char* argv[]){
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
+				int nextRank = (my_rank-1+p)%p;
+				int prevRank = (my_rank+1)%p;
 
 				//Calculate forces
 				if (ringNumber == 0) {
@@ -475,12 +487,12 @@ int main(int argc, char* argv[]){
 					 }
 					}
 
-					MPI_Sendrecv(&(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank-1+p)%p, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, (my_rank-1+p)%p, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, (my_rank+1)%p, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, (my_rank-1+p)%p, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, (my_rank+1)%p, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-					MPI_Sendrecv(&(pointerForTempArray[0]),  particlesToReceive, MPI_INT, (my_rank-1+p)%p, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, (my_rank+1)%p, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, &(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_s_x[0]),  particlesToReceive, MPI_INT, nextRank, 2, &(tempArray_s_x[0]), particlesToReceive, MPI_INT, prevRank, 2, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_s_y[0]),  particlesToReceive, MPI_INT, nextRank, 3, &(tempArray_s_y[0]), particlesToReceive, MPI_INT, prevRank, 3, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_f_x[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 4, &(tempArray_f_x[0]), particlesToReceive, MPI_DOUBLE, prevRank, 4, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(tempArray_f_y[0]),  particlesToReceive, MPI_DOUBLE, nextRank, 5, &(tempArray_f_y[0]), particlesToReceive, MPI_DOUBLE, prevRank, 5, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+					MPI_Sendrecv(&(pointerForTempArray[0]),  particlesToReceive, MPI_INT, nextRank, 6, &(pointerForTempArray[0]), particlesToReceive, MPI_INT, prevRank, 6, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 					if (ringNumber == (p-1)){
 						for(i = 0; i < particlesToReceive; i++) {
