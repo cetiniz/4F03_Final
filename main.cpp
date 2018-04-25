@@ -137,7 +137,7 @@ int main(int argc, char* argv[]){
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
 
- 		#pragma omp parallel for reduction(+:numParticlesLight,numParticlesMedium,numParticlesHeavy)
+ 		#pragma omp parallel for reduction(-:numParticlesLight,numParticlesMedium,numParticlesHeavy)
  		for(i = 0; i < numParticlesTotal; i++){
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
@@ -177,6 +177,11 @@ int main(int argc, char* argv[]){
  				numParticlesHeavy--;
  			}
  		}
+
+ 		printf("LIGHT: %d\n", numParticlesLight);
+ 		printf("MEDIUM: %d\n", numParticlesMedium);
+ 		printf("HEAVY: %d\n", numParticlesHeavy);
+
  		int masterParticlesToReceive = (0 < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 			int * masterWeights;
 			int * masterArray_s_x;
