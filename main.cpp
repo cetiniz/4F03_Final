@@ -10,14 +10,10 @@
 #include "savebmp.h"
 #include "properties.h"
 
-#include <omp.h>
-
-
-
 #define _XOPEN_SOURCE
 #define epsilon 0.000000000000000222
 //#define g pow(6.673*10, -11)
-#define g 1
+#define g 0.7
 
 double **contigArrayGenerator(int row, int col){
 	double **contigarray = (double **)malloc(row*sizeof(double));
@@ -30,7 +26,7 @@ double **contigArrayGenerator(int row, int col){
 
 double computeForce(int x1, int y1, int w1, int x2, int y2, int w2, int axisToCompute, bool isTrue = false){
 
-	if (abs(x1-x2) < 10 &&  abs(y1-y2) < 10) {
+	if ((abs(x1-x2) < 5 &&  abs(y1-y2) < 5) || (abs(x1-x2) > 100000 &&  abs(y1-y2) > 100000)) {
 		return 0;
 	}
 	
@@ -82,14 +78,13 @@ int main(int argc, char* argv[]){
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &p);
 
-	omp_set_dynamic(0); 
 	//variables
 	int numParticlesLight = std::stoi(argv[1]);
 	int numParticlesMedium = std::stoi(argv[2]);
 	int numParticlesHeavy = std::stoi(argv[3]);
 	int numSteps = std::stoi(argv[4]);
 	int numSubSteps = std::stoi(argv[5]);
-	int timeSubSteps = std::stoi(argv[6]);
+	double timeSubSteps = std::stof(argv[6]);
 	int numParticlesTotal = numParticlesLight + numParticlesMedium + numParticlesHeavy; //total number of particles is sum of light, medium, heavy particle numbers
  	int * w = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store weight of particles
  	int * s_x = (int *) malloc(sizeof(int) * numParticlesTotal); //array to store positions of particles in x dimension
@@ -128,16 +123,11 @@ int main(int argc, char* argv[]){
  	double * forces_x;
  	double * forces_y;
 
- 	double minTime, maxTime, avgTime;
- 	int counter;
-
 
  	MPI_Status status;
 
  /***************************** MASTER TASK ***************************/
  	if(my_rank == 0){
-
- 		#pragma omp for
  		for(i = 0; i < numParticlesTotal; i++){
  			if(numParticlesLight > 0){
  				w[i] = drand48() * (massLightMax-massLightMin+1) + massLightMin;
@@ -150,9 +140,7 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  				}
- 				#pragma omp atomic 
  				numParticlesLight--;
- 				printf("LIGHT: %d\n", numParticlesLight);
  			} else if(numParticlesMedium > 0){
  				w[i] = drand48() * (massMediumMax-massMediumMin+1) + massMediumMin;
   				s_x[i] = drand48()*imageWidth;
@@ -164,7 +152,6 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  					v_y[i] = -1*(drand48() * (velocityMediumMax-velocityMediumMin+1) + velocityMediumMin);
  				}
- 				#pragma omp atomic 
  				numParticlesMedium--;
  			} else if(numParticlesHeavy > 0){
  				w[i] = drand48() * (massHeavyMax-massHeavyMin+1) + massHeavyMin;
@@ -177,13 +164,9 @@ int main(int argc, char* argv[]){
  					v_x[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  					v_y[i] = -1*(drand48() * (velocityHeavyMax-velocityHeavyMin+1) + velocityHeavyMin);
  				}
- 				#pragma omp atomic 
  				numParticlesHeavy--;
  			}
  		}
-
-
-
  		int masterParticlesToReceive = (0 < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 			int * masterWeights;
 			int * masterArray_s_x;
@@ -199,22 +182,12 @@ int main(int argc, char* argv[]){
 			double * tempArray_f_y = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
 			int * pointerForTempMasterArray = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
 
-			double start, end;
-			minTime = 10000000;
- 			maxTime = 0;
- 			avgTime = 0;
- 			counter = 0;
-  			start = MPI_Wtime(); //start timer
-
-  
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			// ************** ALLOCATED FOR MASTER *************** //
-
+			
 
 			// ************** ALLOCATED FOR SLAVES *************** //
-
 			for (int dest = 0; dest < p; dest++){
-
 				if (dest == 0) {
 					particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 					masterArray_s_x = (int *) malloc(sizeof(int) * particlesToReceive); 
@@ -260,11 +233,15 @@ int main(int argc, char* argv[]){
 					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
 					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);		
+					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);	
+
+					free(particleWeights);
+					free(particlesToCompute_s_x);
+					free(particlesToCompute_s_y);
+					free(pointerForOriginalArray);
 				}
 			}
 			// /************** RING LOOP WILL GO HERE***************/
-
 			for(int ringNumber = 0; ringNumber < (p); ringNumber++){				
 				//Send to dest AND receive from source
 				int nextRank = (my_rank-1+p)%p;
@@ -320,7 +297,6 @@ int main(int argc, char* argv[]){
 			}
 
 /**************************** MASTER RECIEVES TASKS FROM SLAVES **********************/
-
 			for(int dest = 0; dest < p; dest++) {
 				particlesToReceive = (dest < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 
@@ -343,12 +319,14 @@ int main(int argc, char* argv[]){
 					
 				}
 				for(j = 0; j < particlesToReceive; j++) {
+					printf("%f ",timeSubSteps * forces_x[j]);
 					v_x[pointerForOriginalArray[j]] += timeSubSteps * forces_x[j]/weights[j];
 					v_y[pointerForOriginalArray[j]] += timeSubSteps * forces_y[j]/weights[j];
 					
 					s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
 					
+					printf("%f\n",timeSubSteps * forces_x[j]/weights[j]);
 					//printArray(s_x,particlesToReceive);
 					//printArray(s_y,particlesToReceive);
 					//printf("!!!!!!!I AM FROM DEST %d\n", dest);
@@ -358,7 +336,6 @@ int main(int argc, char* argv[]){
 
 			unsigned char* image = (unsigned char *) calloc(3*imageWidth*imageHeight, sizeof(unsigned char));
 			// distribute particle colours at given position to array to create image
-			//#pragma omp parallel for 
 			for(i = 0; i < numParticlesTotal; i++){
 				int index = (s_y[i] * imageWidth + s_x[i])*3;
 				//printf("%d : %d\n",s_y[i],(sizeof(unsigned char) * 3 * imageWidth*imageHeight));
@@ -387,21 +364,6 @@ int main(int argc, char* argv[]){
 					}
 				}
 			}
-
-			end = MPI_Wtime();
-			double time = end-start;
-			printf("time: %f\n", time);
-			if(time <= minTime){
-				minTime = time;
-			} 
-
-			if(time >= maxTime){
-				maxTime = time;
-			}
-
-			avgTime += time;
-			counter++;
-
 			// Make sure LOGIC HERE IS SOUND
 			if (frameNum % numSubSteps == 0) {
 
@@ -413,11 +375,10 @@ int main(int argc, char* argv[]){
 			}
 			free(image);
 		}
-
-		printf("%f %f %f\n", minTime, maxTime, avgTime/counter); //end time 
-		printf("counter: %d\n", counter);
 		
 	}
+
+
 
  /*************************** SLAVE TASKS **********************************/
 	if(my_rank > 0){
@@ -451,13 +412,32 @@ int main(int argc, char* argv[]){
 				pointerForTempArray[i] = pointerForLocalArray[i];
 			}
 			// RING LOOP GOES HERE
-
 			for(int ringNumber = 0; ringNumber < p; ringNumber++){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
 				int nextRank = (my_rank-1+p)%p;
+				//if(my_rank == p-1){
+					//nextRank = 1;
+				//} else {
+					//nextRank = my_rank + 1;
+				//}
 
 				int prevRank = (my_rank+1)%p;
+				//if(my_rank == 1){
+					//prevRank = p-1;
+				//} else {
+					//prevRank = my_rank - 1;
+				//}
+				//CHANGE BASED ON EVEN OR ODD
+				//IF EVEN
+				// if(my_rank % 2 == 0){
+				// 	MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
+				// 	MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
+				// }
+				// else {
+				// 	MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
+				// 	MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
+				// }
 				/*printf("WEIghT\n");
 				printArray(localWeights, particlesToReceive);
 				printf("POINTER\n");
@@ -497,7 +477,7 @@ int main(int argc, char* argv[]){
 					for(i = 0; i < particlesToReceive; i++){
 					 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
 					 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
-					 			if (i ==10){
+					 			if (numFrames == 4){
 					 				//printf("|%f : %d : %d : %d : %d : %d : %d|\n",localArray_f_x[i],localArray_s_x[i],localArray_s_y[i],tempArray_s_x[j],tempArray_s_y[j],localWeights[i],tempWeights[j]);
 					 				//printf("%f\n",computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0, true));
 					 			}
@@ -537,6 +517,3 @@ int main(int argc, char* argv[]){
 	MPI_Finalize();
 	return 0; 
 }
-
-
-
