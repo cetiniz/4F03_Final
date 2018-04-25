@@ -125,6 +125,8 @@ int main(int argc, char* argv[]){
  	double * forces_x;
  	double * forces_y;
 
+ 	double minTime, maxTime, avgTime;
+ 	int counter;
 
 
  	MPI_Status status;
@@ -190,10 +192,10 @@ int main(int argc, char* argv[]){
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			// ************** ALLOCATED FOR MASTER *************** //
 			double start, end;
-			double minTime = 10000000;
- 			double maxTime = -1;
- 			double avgTime = 0;
- 			int counter = 0;
+			minTime = 10000000;
+ 			maxTime = -1;
+ 			avgTime = 0;
+ 			counter = 0;
   			start = MPI_Wtime(); //start timer
 
 			// ************** ALLOCATED FOR SLAVES *************** //
