@@ -193,7 +193,7 @@ int main(int argc, char* argv[]){
 			// ************** ALLOCATED FOR MASTER *************** //
 			double start, end;
 			minTime = 10000000;
- 			maxTime = -1;
+ 			maxTime = 0;
  			avgTime = 0;
  			counter = 0;
   			start = MPI_Wtime(); //start timer
@@ -339,9 +339,6 @@ int main(int argc, char* argv[]){
 				}
 			}
 
-
-
-
 			unsigned char* image = (unsigned char *) calloc(3*imageWidth*imageHeight, sizeof(unsigned char));
 			// distribute particle colours at given position to array to create image
 			for(i = 0; i < numParticlesTotal; i++){
@@ -375,9 +372,12 @@ int main(int argc, char* argv[]){
 
 			end = MPI_Wtime();
 			double time = end-start;
-			if(time < minTime){
+			printf("time: %f\n", time);
+			if(time <= minTime){
 				minTime = time;
-			} else if(time > maxTime){
+			} 
+
+			if(time >= maxTime){
 				maxTime = time;
 			}
 
@@ -396,7 +396,8 @@ int main(int argc, char* argv[]){
 			free(image);
 		}
 
-		printf("%f %f %f", minTime, maxTime, avgTime/counter); //end time 
+		printf("%f %f %f\n", minTime, maxTime, avgTime/counter); //end time 
+		printf("counter: %d\n", counter);
 		
 	}
 
