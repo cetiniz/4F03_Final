@@ -123,6 +123,9 @@ int main(int argc, char* argv[]){
  	double * forces_x;
  	double * forces_y;
 
+ 	double minTime, maxTime, avgTime;
+ 	int counter;
+
 
  	MPI_Status status;
 
@@ -181,6 +184,13 @@ int main(int argc, char* argv[]){
 			int * tempArray_s_y = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
 			double * tempArray_f_y = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
 			int * pointerForTempMasterArray = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
+
+			double start, end;
+			minTime = 10000000;
+ 			maxTime = 0;
+ 			avgTime = 0;
+ 			counter = 0;
+  			start = MPI_Wtime(); //start timer
 
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			// ************** ALLOCATED FOR MASTER *************** //
@@ -319,14 +329,14 @@ int main(int argc, char* argv[]){
 					
 				}
 				for(j = 0; j < particlesToReceive; j++) {
-					printf("%f ",timeSubSteps * forces_x[j]);
+					//printf("%f ",timeSubSteps * forces_x[j]);
 					v_x[pointerForOriginalArray[j]] += timeSubSteps * forces_x[j]/weights[j];
 					v_y[pointerForOriginalArray[j]] += timeSubSteps * forces_y[j]/weights[j];
 					
 					s_x[pointerForOriginalArray[j]] += timeSubSteps * v_x[pointerForOriginalArray[j]];
 					s_y[pointerForOriginalArray[j]] += timeSubSteps * v_y[pointerForOriginalArray[j]];
 					
-					printf("%f\n",timeSubSteps * forces_x[j]/weights[j]);
+					//printf("%f\n",timeSubSteps * forces_x[j]/weights[j]);
 					//printArray(s_x,particlesToReceive);
 					//printArray(s_y,particlesToReceive);
 					//printf("!!!!!!!I AM FROM DEST %d\n", dest);
@@ -364,6 +374,21 @@ int main(int argc, char* argv[]){
 					}
 				}
 			}
+
+			end = MPI_Wtime();
+			double time = end-start;
+			printf("time: %f\n", time);
+			if(time <= minTime){
+				minTime = time;
+			} 
+
+			if(time >= maxTime){
+				maxTime = time;
+			}
+
+			avgTime += time;
+			counter++;
+
 			// Make sure LOGIC HERE IS SOUND
 			if (frameNum % numSubSteps == 0) {
 
@@ -375,6 +400,9 @@ int main(int argc, char* argv[]){
 			}
 			free(image);
 		}
+
+		printf("%f %f %f\n", minTime, maxTime, avgTime/counter); //end time 
+		printf("counter: %d\n", counter);
 		
 	}
 
