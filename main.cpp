@@ -389,7 +389,7 @@ int main(int argc, char* argv[]){
 
 						} else{
 							image[index] = 160;
-							image[index+1] = 189;
+							image[index+1] = 150;
 							image[index+2] = 255;
 						}
 					}
