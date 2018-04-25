@@ -11,7 +11,7 @@ void saveBMP(const char* filename, const unsigned char* result, int w, int h){
 
 	unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};
 	unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
-	unsigned char bmppad[3] = {0,0,0};
+	unsigned char bmppad[3] = {255,255,255};
 
 	bmpfileheader[ 2] = (unsigned char)(filesize    );
 	bmpfileheader[ 3] = (unsigned char)(filesize>> 8);
