@@ -10,6 +10,8 @@
 #include "savebmp.h"
 #include "properties.h"
 
+
+
 #define _XOPEN_SOURCE
 #define epsilon 0.000000000000000222
 //#define g pow(6.673*10, -11)
@@ -124,6 +126,7 @@ int main(int argc, char* argv[]){
  	double * forces_y;
 
 
+
  	MPI_Status status;
 
  /***************************** MASTER TASK ***************************/
@@ -182,9 +185,16 @@ int main(int argc, char* argv[]){
 			double * tempArray_f_y = (double *) calloc(masterParticlesToReceive,sizeof(double)); 
 			int * pointerForTempMasterArray = (int *) malloc(sizeof(int) * masterParticlesToReceive); 
 
+		
+
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			// ************** ALLOCATED FOR MASTER *************** //
-			
+			double start, end;
+			double minTime = 10000000;
+ 			double maxTime = -1;
+ 			double avgTime = 0;
+ 			int counter = 0;
+  			start = MPI_Wtime(); //start timer
 
 			// ************** ALLOCATED FOR SLAVES *************** //
 			for (int dest = 0; dest < p; dest++){
@@ -327,6 +337,9 @@ int main(int argc, char* argv[]){
 				}
 			}
 
+
+
+
 			unsigned char* image = (unsigned char *) calloc(3*imageWidth*imageHeight, sizeof(unsigned char));
 			// distribute particle colours at given position to array to create image
 			for(i = 0; i < numParticlesTotal; i++){
@@ -357,6 +370,18 @@ int main(int argc, char* argv[]){
 					}
 				}
 			}
+
+			end = MPI_Wtime();
+			double time = end-start;
+			if(time < minTime){
+				minTime = time;
+			} else if(time > maxTime){
+				maxTime = time;
+			}
+
+			avgTime += time;
+			counter++;
+
 			// Make sure LOGIC HERE IS SOUND
 			if (frameNum % numSubSteps == 0) {
 
@@ -368,10 +393,10 @@ int main(int argc, char* argv[]){
 			}
 			free(image);
 		}
+
+		printf("%f %f %f", minTime, maxTime, avgTime/counter); //end time 
 		
 	}
-
-
 
  /*************************** SLAVE TASKS **********************************/
 	if(my_rank > 0){
@@ -409,28 +434,8 @@ int main(int argc, char* argv[]){
 				//printf("My thread number is %d and my loop (slaveRingNumber) is %d\n", my_rank,ringNumber);
 				/******* Send & Recieve particles from another SLAVE *******/
 				int nextRank = (my_rank-1+p)%p;
-				//if(my_rank == p-1){
-					//nextRank = 1;
-				//} else {
-					//nextRank = my_rank + 1;
-				//}
 
 				int prevRank = (my_rank+1)%p;
-				//if(my_rank == 1){
-					//prevRank = p-1;
-				//} else {
-					//prevRank = my_rank - 1;
-				//}
-				//CHANGE BASED ON EVEN OR ODD
-				//IF EVEN
-				// if(my_rank % 2 == 0){
-				// 	MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
-				// 	MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
-				// }
-				// else {
-				// 	MPI_Recv(&(tempWeights[0]), particlesToReceive, MPI_INT, prevRank, 1, MPI_COMM_WORLD, &status);
-				// 	MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, nextRank, 1, MPI_COMM_WORLD);
-				// }
 				/*printf("WEIghT\n");
 				printArray(localWeights, particlesToReceive);
 				printf("POINTER\n");
@@ -471,8 +476,8 @@ int main(int argc, char* argv[]){
 					 	for(j = 0; j < particlesToReceive; j++){ //MAKE SURE PARTICLES TO RECEIVE ARE DIFFERENT NUMBERS!!!!!!!!!!!!!
 					 		if(pointerForLocalArray[i] < pointerForTempArray[j]){
 					 			if (i ==10){
-					 				printf("|%f : %d : %d : %d : %d : %d : %d|\n",localArray_f_x[i],localArray_s_x[i],localArray_s_y[i],tempArray_s_x[j],tempArray_s_y[j],localWeights[i],tempWeights[j]);
-					 				printf("%f\n",computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0, true));
+					 				//printf("|%f : %d : %d : %d : %d : %d : %d|\n",localArray_f_x[i],localArray_s_x[i],localArray_s_y[i],tempArray_s_x[j],tempArray_s_y[j],localWeights[i],tempWeights[j]);
+					 				//printf("%f\n",computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0, true));
 					 			}
 					 			//
 					 			localArray_f_x[i] += computeForce(localArray_s_x[i], localArray_s_y[i], localWeights[i], tempArray_s_x[j], tempArray_s_y[j], tempWeights[j], 0);
@@ -487,7 +492,7 @@ int main(int argc, char* argv[]){
 				}
 			}
 		// FINAL SEND GOES HERE
-		printf("%f\n",localArray_f_x[10]);
+		//printf("%f\n",localArray_f_x[10]);
 		MPI_Send(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 8, MPI_COMM_WORLD);
 		MPI_Send(&(localArray_f_x[0]), particlesToReceive, MPI_DOUBLE, 0, 8, MPI_COMM_WORLD);
 		MPI_Send(&(localArray_f_y[0]), particlesToReceive, MPI_DOUBLE, 0, 8, MPI_COMM_WORLD);
