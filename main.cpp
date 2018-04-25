@@ -130,7 +130,7 @@ int main(int argc, char* argv[]){
  	double minTime, maxTime, avgTime;
  	int counter;
 
- 	nt totalImageSize = sizeof(unsigned char) * 3 * imageWidth*imageHeight;
+ 	int totalImageSize = sizeof(unsigned char) * 3 * imageWidth*imageHeight;
 
 
  	MPI_Status status;
