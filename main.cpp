@@ -151,6 +151,7 @@ int main(int argc, char* argv[]){
  					v_y[i] = -1*(drand48() * (velocityLightMax-velocityLightMin+1) + velocityLightMin);
  				}
  				numParticlesLight--;
+ 				printf("LIGHT: %d\n", numParticlesLight);
  			} else if(numParticlesMedium > 0){
  				w[i] = drand48() * (massMediumMax-massMediumMin+1) + massMediumMin;
   				s_x[i] = drand48()*imageWidth;
@@ -178,9 +179,7 @@ int main(int argc, char* argv[]){
  			}
  		}
 
- 		printf("LIGHT: %d\n", numParticlesLight);
- 		printf("MEDIUM: %d\n", numParticlesMedium);
- 		printf("HEAVY: %d\n", numParticlesHeavy);
+
 
  		int masterParticlesToReceive = (0 < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 			int * masterWeights;
