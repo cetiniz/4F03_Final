@@ -199,7 +199,7 @@ int main(int argc, char* argv[]){
  			counter = 0;
   			start = MPI_Wtime(); //start timer
 
-  			#pragma omp parallel for 
+  
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
 			// ************** ALLOCATED FOR MASTER *************** //
 
