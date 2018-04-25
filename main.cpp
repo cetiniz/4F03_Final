@@ -351,7 +351,7 @@ int main(int argc, char* argv[]){
 
 			unsigned char* image = (unsigned char *) calloc(3*imageWidth*imageHeight, sizeof(unsigned char));
 			// distribute particle colours at given position to array to create image
-			#pragma omp parallel for 
+			//#pragma omp parallel for 
 			for(i = 0; i < numParticlesTotal; i++){
 				int index = (s_y[i] * imageWidth + s_x[i])*3;
 				//printf("%d : %d\n",s_y[i],(sizeof(unsigned char) * 3 * imageWidth*imageHeight));
