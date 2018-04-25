@@ -384,8 +384,8 @@ int main(int argc, char* argv[]){
 							image[index+2] = 255;
 						} else if(w[i] >= massMediumMin && w[i] <= massMediumMax){
 							image[index] = 255;
-							image[index+1] = 236;
-							image[index+2] = 160;
+							image[index+1] = 255;
+							image[index+2] = 0;
 
 						} else{
 							image[index] = 255;
