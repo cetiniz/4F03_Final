@@ -10,6 +10,8 @@
 #include "savebmp.h"
 #include "properties.h"
 
+#include "stdint.h"
+
 #include <omp.h>
 
 #define _XOPEN_SOURCE
@@ -196,6 +198,8 @@ int main(int argc, char* argv[]){
  			maxTime = 0;
  			avgTime = 0;
  			counter = 0;
+
+ 			int ** sendItAll = (int **) malloc(sizeof(int*) * 4);
   			
 
 		for (int frameNum = 0; frameNum < (numSteps * numSubSteps); frameNum++) {	
@@ -247,10 +251,20 @@ int main(int argc, char* argv[]){
 						pointerForOriginalArray[m] = i;
 						m++;
 					}
-					MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
-					MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);	
+
+
+					sendItAll[0] = &(particleWeights[0]);
+					sendItAll[1] = &(particlesToCompute_s_x[0]);
+					sendItAll[2] = &(particlesToCompute_s_y[0]);
+					sendItAll[3] = &(pointerForOriginalArray[0]);
+
+					MPI_Send(&(sendItAll[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+
+					// MPI_Send(&(particleWeights[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					// MPI_Send(&(particlesToCompute_s_x[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					// MPI_Send(&(particlesToCompute_s_y[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);
+					// MPI_Send(&(pointerForOriginalArray[0]), particlesToReceive, MPI_INT, dest, 7, MPI_COMM_WORLD);	
+
 
 					free(particleWeights);
 					free(particlesToCompute_s_x);
@@ -441,12 +455,25 @@ int main(int argc, char* argv[]){
 		tempArray_f_y = (double *) calloc(particlesToReceive,sizeof(double)); 
 		pointerForTempArray = (int *) calloc(particlesToReceive,sizeof(int)); 
 
+		int ** sendItAll = (int **) malloc(sizeof(int*) * 4);
+
  	/******* Recieve particles from MASTER *******/
 		for (int numFrames = 0; numFrames < numSteps * numSubSteps; numFrames++){
-			MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
-			MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+
+			
+
+			MPI_Recv(&(sendItAll[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+
+			localWeights[0] = sendItAll[0][0];
+			localArray_s_x[0] = sendItAll[1][0];
+			localArray_s_y[0] = sendItAll[2][0];
+			pointerForLocalArray[0] = sendItAll[3][0];
+
+
+			// MPI_Recv(&(localWeights[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			// MPI_Recv(&(localArray_s_x[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			// MPI_Recv(&(localArray_s_y[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
+			// MPI_Recv(&(pointerForLocalArray[0]), particlesToReceive, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
 			
 			for(i = 0; i < particlesToReceive; i++){
 				tempArray_s_x[i] = localArray_s_x[i];
