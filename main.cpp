@@ -292,7 +292,7 @@ int main(int argc, char* argv[]){
 				else {
 					currentParticlesSize = nextParticlesSize;
 				}
-				nextParticlesSize = (((nextRank + ringNumber)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				nextParticlesSize = (((nextRank)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				
 
 				if (ringNumber == 0) {
@@ -447,7 +447,7 @@ int main(int argc, char* argv[]){
 				//image_00000.bmb
 				int frameOut = frameNum / numSubSteps;
 				char result[50];
-				sprintf(result, "%s_%04i.bmb",argv[9], frameOut);
+				sprintf(result, "%s_%04i.bmp",argv[9], frameOut);
 				saveBMP(result,image, imageWidth, imageHeight);
 			}
 			free(image);
@@ -508,7 +508,7 @@ int main(int argc, char* argv[]){
 				else {
 					currentParticlesSize = nextParticlesSize;
 				}
-				nextParticlesSize = (((nextRank + ringNumber)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				nextParticlesSize = (((nextRank)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				
 
 				if (ringNumber == 0) {
