@@ -408,8 +408,18 @@ int main(int argc, char* argv[]){
 
 				int frameOut = frameNum / numSubSteps;
 				char result[50];
-				sprintf(result, "%d", frameOut);
 				strcat(result, argv[9]);
+				strcat(result, "_");
+				if(frameOut/10000 < 1){
+					strcat(result, "0");
+				} else if(frameOut/1000 < 1){
+					strcat(result, "00");
+				} else if(frameOut/100 < 1){
+					strcat(result, "000");
+				} else if(frameOut/10 < 1){
+					strcat(result, "0000");
+				}
+				sprintf(result, "%d", frameOut);
 				saveBMP(result,image, imageWidth, imageHeight);
 			}
 			free(image);
@@ -421,7 +431,7 @@ int main(int argc, char* argv[]){
 
  /*************************** SLAVE TASKS **********************************/
 	if(my_rank > 0){
- 		particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+ 		particlesToReceive = (my_rank < particlesRemaining) ? particlesPerProcessor+imageWidth : particlesPerProcessor;
 		localWeights = (int *) calloc(particlesToReceive,sizeof(int)); 
 		localArray_s_x = (double *) calloc(particlesToReceive,sizeof(double));  
 		localArray_f_x = (double *) calloc(particlesToReceive,sizeof(double));  
