@@ -407,21 +407,9 @@ int main(int argc, char* argv[]){
 			if (frameNum % numSubSteps == 0) {
 
 				int frameOut = frameNum / numSubSteps;
-
 				char result[50];
-
-				strcat(result, argv[9]);
-				strcat(result, "_");
-				if(frameOut/10000 < 1){
-					strcat(result, "0");
-				} else if(frameOut/1000 < 1){
-					strcat(result, "00");
-				} else if(frameOut/100 < 1){
-					strcat(result, "000");
-				} else if(frameOut/10 < 1){
-					strcat(result, "0000");
-				}
 				sprintf(result, "%d", frameOut);
+				strcat(result, argv[9]);
 				saveBMP(result,image, imageWidth, imageHeight);
 			}
 			free(image);
