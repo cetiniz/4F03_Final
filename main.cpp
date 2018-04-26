@@ -407,7 +407,10 @@ int main(int argc, char* argv[]){
 			if (frameNum % numSubSteps == 0) {
 
 				int frameOut = frameNum / numSubSteps;
-				char result[50] = {argv[9]};
+				std::string path;
+				path = argv[9];
+				char result[50] = path.c_str();
+
 				//strcat(result, argv[9]);
 				strcat(result, "_");
 				if(frameOut/10000 < 1){
