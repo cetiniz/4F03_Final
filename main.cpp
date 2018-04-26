@@ -292,7 +292,7 @@ int main(int argc, char* argv[]){
 				else {
 					currentParticlesSize = nextParticlesSize;
 				}
-				nextParticlesSize = (((nextRank)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				nextParticlesSize = (((nextRank + ringNumber)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				
 
 				if (ringNumber == 0) {
@@ -508,7 +508,7 @@ int main(int argc, char* argv[]){
 				else {
 					currentParticlesSize = nextParticlesSize;
 				}
-				nextParticlesSize = (((nextRank)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
+				nextParticlesSize = (((nextRank + ringNumber)%p) < particlesRemaining) ? particlesPerProcessor+1 : particlesPerProcessor;
 				
 
 				if (ringNumber == 0) {
